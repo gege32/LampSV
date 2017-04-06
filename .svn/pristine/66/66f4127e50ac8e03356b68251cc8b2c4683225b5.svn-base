@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<programProvider>
+   <programs>
+      <program programCode="a">
+         <presets>
+            <presets>0</presets>
+         </presets>
+      </program>
+      <program programCode="b">
+         <presets>
+            <presets>1</presets>
+            <presets>0</presets>
+         </presets>
+      </program>
+   </programs>
+</programProvider>

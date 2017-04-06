@@ -1,0 +1,6 @@
+portname=/dev/ttyUSB0
+measureSave=true
+presetSave=true
+measureFileName=measure.dat
+presetFileName=presetData.dat
+debug=false
