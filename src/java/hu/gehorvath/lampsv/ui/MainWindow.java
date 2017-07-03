@@ -34,6 +34,8 @@ import java.awt.Color;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.JList;
+import java.awt.Panel;
 
 public class MainWindow {
 
@@ -52,6 +54,9 @@ public class MainWindow {
 	private static JTextArea logTextShow;
 
 	JComboBox<Preset> jcPresets;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
 
 	/**
 	 * Create the application.
@@ -71,15 +76,17 @@ public class MainWindow {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 633, 387);
+		frame.setBounds(100, 100, 718, 387);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBackground(Color.WHITE);
 		tabbedPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		frame.getContentPane().add(tabbedPane, "name_972030312230151");
 
 		JPanel presetsPanel = new JPanel();
+		presetsPanel.setBackground(Color.GRAY);
 		presetsPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		tabbedPane.addTab("Presets", null, presetsPanel, null);
 
@@ -229,14 +236,178 @@ public class MainWindow {
 										GroupLayout.PREFERRED_SIZE)))
 						.addGap(81)));
 		presetsPanel.setLayout(gl_presetsPanel);
-
-		JPanel programsPanel = new JPanel();
-		programsPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		tabbedPane.addTab("Programs", null, programsPanel, null);
+		
+				JPanel programsPanel = new JPanel();
+				programsPanel.setBackground(Color.GRAY);
+				programsPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+				tabbedPane.addTab("Programs", null, programsPanel, null);
+				
+				JComboBox comboBox = new JComboBox();
+				
+				JList list = new JList();
+				list.setForeground(Color.WHITE);
+				
+				JList list_1 = new JList();
+				
+				JButton button = new JButton("Add");
+				
+				JButton button_1 = new JButton("Del");
+				
+				JButton btnNewButton = new JButton("Save");
+				
+				textField = new JTextField();
+				textField.setColumns(10);
+				
+				JLabel lblName = new JLabel("Name");
+				
+				textField_1 = new JTextField();
+				textField_1.setColumns(10);
+				
+				JLabel lblId = new JLabel("ID");
+				
+				JLabel lblSelectProgram = new JLabel("Select program");
+				
+				JButton button_2 = new JButton("Up");
+				
+				JButton btnDown = new JButton("Down");
+				GroupLayout gl_programsPanel = new GroupLayout(programsPanel);
+				gl_programsPanel.setHorizontalGroup(
+					gl_programsPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_programsPanel.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_programsPanel.createSequentialGroup()
+									.addGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING)
+										.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblName)
+										.addComponent(lblSelectProgram)
+										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE))
+									.addGap(46)
+									.addComponent(list, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
+									.addGap(18)
+									.addComponent(list_1, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
+									.addGap(18)
+									.addGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(button_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(button, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(button_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(btnDown, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+								.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblId))
+							.addContainerGap(123, Short.MAX_VALUE))
+				);
+				gl_programsPanel.setVerticalGroup(
+					gl_programsPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_programsPanel.createSequentialGroup()
+							.addGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_programsPanel.createSequentialGroup()
+									.addGap(16)
+									.addGroup(gl_programsPanel.createParallelGroup(Alignment.BASELINE)
+										.addComponent(list_1, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE)
+										.addComponent(list, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE)))
+								.addGroup(gl_programsPanel.createSequentialGroup()
+									.addGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_programsPanel.createSequentialGroup()
+											.addGap(20)
+											.addComponent(button)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(button_1))
+										.addGroup(gl_programsPanel.createSequentialGroup()
+											.addContainerGap()
+											.addComponent(lblSelectProgram)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_programsPanel.createSequentialGroup()
+											.addGap(51)
+											.addComponent(lblName)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+											.addGap(15)
+											.addComponent(lblId)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+										.addGroup(gl_programsPanel.createSequentialGroup()
+											.addGap(42)
+											.addComponent(button_2)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(btnDown)))
+									.addGap(10)
+									.addComponent(btnNewButton)))
+							.addContainerGap(66, Short.MAX_VALUE))
+				);
+				programsPanel.setLayout(gl_programsPanel);
 
 		JPanel controllersPanel = new JPanel();
+		controllersPanel.setBackground(Color.GRAY);
 		controllersPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		tabbedPane.addTab("Controllers", null, controllersPanel, null);
+		
+		JComboBox comboBox_1 = new JComboBox();
+		
+		JLabel lblSelectController = new JLabel("Select controller");
+		
+		JLabel lblName_1 = new JLabel("Name");
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		
+		JLabel lblSerialPort = new JLabel("Serial port");
+		
+		JComboBox comboBox_2 = new JComboBox();
+		
+		JLabel lblNewLabel = new JLabel("Program");
+		
+		JComboBox comboBox_3 = new JComboBox();
+		GroupLayout gl_controllersPanel = new GroupLayout(controllersPanel);
+		gl_controllersPanel.setHorizontalGroup(
+			gl_controllersPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_controllersPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(comboBox_1, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(lblSelectController, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGap(63)
+					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_controllersPanel.createSequentialGroup()
+							.addComponent(lblNewLabel)
+							.addContainerGap())
+						.addGroup(Alignment.TRAILING, gl_controllersPanel.createSequentialGroup()
+							.addGroup(gl_controllersPanel.createParallelGroup(Alignment.TRAILING)
+								.addComponent(comboBox_3, Alignment.LEADING, 0, 114, Short.MAX_VALUE)
+								.addComponent(textField_2, Alignment.LEADING)
+								.addComponent(lblName_1, Alignment.LEADING)
+								.addComponent(lblSerialPort, Alignment.LEADING)
+								.addComponent(comboBox_2, Alignment.LEADING, 0, 114, Short.MAX_VALUE))
+							.addContainerGap(397, GroupLayout.PREFERRED_SIZE))))
+		);
+		gl_controllersPanel.setVerticalGroup(
+			gl_controllersPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_controllersPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblSelectController)
+						.addComponent(lblName_1))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addComponent(lblSerialPort)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(lblNewLabel)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(comboBox_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(143, Short.MAX_VALUE))
+		);
+		controllersPanel.setLayout(gl_controllersPanel);
+		
+		Panel statePanel = new Panel();
+		tabbedPane.addTab("State", null, statePanel, null);
 		
 		JPanel logPanel = new JPanel();
 		logPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -313,5 +484,4 @@ public class MainWindow {
 
 		
 	}
-	
 }
