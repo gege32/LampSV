@@ -6,9 +6,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
-import javax.xml.bind.annotation.XmlList;
-import javax.xml.bind.annotation.XmlRootElement;
 
 public class Program {
 
@@ -28,5 +27,10 @@ public class Program {
 	
 	public List<Preset> getPresetList(){
 		return this.presetList;
+	}
+	
+	@XmlID
+	public String getID(){
+		return programCode + "";
 	}
 }

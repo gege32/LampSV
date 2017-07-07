@@ -1,8 +1,10 @@
 package hu.gehorvath.lampsv;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
@@ -53,7 +55,7 @@ public class LampSV {
 	Logger logger = Logger.getLogger(LampSV.class);
 
 	public LampSV() throws FileNotFoundException, IOException {
-		prop.load(new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/lampsv.prop"))));
+		prop.load(new FileReader(new File("data/lampsv.prop")));
 	}
 
 	private void start() {
