@@ -15,7 +15,7 @@ public class Controller {
 	@XmlIDREF
 	Program program;
 	
-	public Program getProgram(){
+	public Program getContProgram(){
 		return program;
 	}
 	
@@ -23,7 +23,7 @@ public class Controller {
 		return serialPort;
 	}
 	
-	public String getControllerName(){
+	public String getName(){
 		return controllerName;
 	}
 	

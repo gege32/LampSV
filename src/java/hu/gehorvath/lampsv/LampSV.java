@@ -59,7 +59,8 @@ public class LampSV {
 	}
 
 	private void start() {
-		Framework.startFramework();
+		Framework framework = new Framework();
+		framework.startFramework();
 		MainWindow mainscreen = new MainWindow();
 		mainscreen.setVisible(true);
 		

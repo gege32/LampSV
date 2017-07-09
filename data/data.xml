@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coreData>
+<presetProvider>
+   <presets>
+         <preset presetID="0" measuredLUX="0">
+            <values>
+               <value>0</value>
+               <value>0</value>
+               <value>0</value>
+               <value>0</value>
+               <value>0</value>
+               <value>0</value>
+            </values>
+            <ID>0</ID>
+         </preset>
+         <preset presetID="1" measuredLUX="25">
+            <values>
+               <value>3</value>
+               <value>2</value>
+               <value>1</value>
+               <value>3</value>
+               <value>1 </value>
+               <value>1</value>
+            </values>
+            <ID>1</ID>
+         </preset>
+   </presets>
+</presetProvider>
+<programProvider>
+   <programs>
+      <program id="0" characterCode="97" description="No feny">
+         <presets>
+            <preset>0</preset>
+         </presets>
+      </program>
+      <program id="1" characterCode="98" description="on/off">
+         <presets>
+            <preset>1</preset>
+            <preset>0</preset>
+         </presets>
+      </program>
+   </programs>
+</programProvider>
+<controllerProvider><controllers><controller controllerName="Test" serialPort="ttyUSB0"><program>a</program></controller></controllers></controllerProvider>
+</coreData>

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -31,6 +32,9 @@ import org.apache.log4j.spi.LoggingEvent;
 import hu.gehorvath.lampsv.core.Preset;
 import hu.gehorvath.lampsv.core.Program;
 import hu.gehorvath.lampsv.ui.data.ICallback;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 
 public class MainWindow {
 
@@ -50,8 +54,13 @@ public class MainWindow {
 
 	JComboBox<Preset> jcPresets;
 	JComboBox<Program> jcPrograms;
-	private JTextField textField;
-	private JTextField textField_1;
+	JList<Preset> jlUnusedPresets;
+	JList<Preset> jlUsedPresets;
+	DefaultListModel<Preset> unusedListModel = new DefaultListModel<>();
+	DefaultListModel<Preset> usedListModel = new DefaultListModel<>();
+	
+	private JTextField tbProgramName;
+	private JTextField tbProgramID;
 	private JTextField textField_2;
 
 	/**
@@ -242,32 +251,70 @@ public class MainWindow {
 				jcPrograms = new JComboBox<Program>();
 				jcPrograms.addItem(new Program());
 				
-				JList list = new JList();
-				list.setForeground(Color.WHITE);
+				jlUnusedPresets = new JList<Preset>(unusedListModel);
 				
-				JList list_1 = new JList();
+				jlUsedPresets = new JList<Preset>(usedListModel);
 				
-				JButton button = new JButton("Add");
+				JButton jbAddPresetToUsed = new JButton("Add");
+				jbAddPresetToUsed.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						Preset selectedPres = jlUnusedPresets.getSelectedValue();
+						unusedListModel.removeElement(selectedPres);
+						usedListModel.addElement(selectedPres);
+					}
+				});
 				
-				JButton button_1 = new JButton("Del");
+				JButton jbRemovePresetFromUsed = new JButton("Del");
+				jbRemovePresetFromUsed.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						Preset selectedPres = jlUsedPresets.getSelectedValue();
+						usedListModel.removeElement(selectedPres);
+						unusedListModel.addElement(selectedPres);
+					}
+				});
 				
 				JButton btnNewButton = new JButton("Save");
 				
-				textField = new JTextField();
-				textField.setColumns(10);
+				tbProgramName = new JTextField();
+				tbProgramName.setColumns(10);
 				
-				JLabel lblName = new JLabel("Name");
+				JLabel lblName = new JLabel("Character ID (unique)");
 				
-				textField_1 = new JTextField();
-				textField_1.setColumns(10);
+				tbProgramID = new JTextField();
+				tbProgramID.setColumns(10);
 				
-				JLabel lblId = new JLabel("ID");
+				JLabel lblId = new JLabel("Description");
 				
 				JLabel lblSelectProgram = new JLabel("Select program");
 				
-				JButton button_2 = new JButton("Up");
+				JButton jbMoveUp = new JButton("Up");
+				jbMoveUp.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						Preset selectedPres = jlUsedPresets.getSelectedValue();
+						int currentIndex = usedListModel.indexOf(selectedPres);
+						if(currentIndex >= 1){
+							usedListModel.removeElement(selectedPres);
+							usedListModel.add(currentIndex - 1, selectedPres);
+						}
+					}
+				});
 				
-				JButton btnDown = new JButton("Down");
+				JButton jbMoveDown = new JButton("Down");
+				jbMoveUp.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						Preset selectedPres = jlUsedPresets.getSelectedValue();
+						int currentIndex = usedListModel.indexOf(selectedPres);
+						if(currentIndex < usedListModel.size()){
+							usedListModel.removeElement(selectedPres);
+							usedListModel.add(currentIndex + 1, selectedPres);
+						}
+					}
+				});
+				
 				GroupLayout gl_programsPanel = new GroupLayout(programsPanel);
 				gl_programsPanel.setHorizontalGroup(
 					gl_programsPanel.createParallelGroup(Alignment.LEADING)
@@ -276,22 +323,22 @@ public class MainWindow {
 							.addGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_programsPanel.createSequentialGroup()
 									.addGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING)
-										.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(tbProgramName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 										.addComponent(lblName)
 										.addComponent(lblSelectProgram)
 										.addComponent(jcPrograms, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE))
 									.addGap(46)
-									.addComponent(list, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
+									.addComponent(jlUnusedPresets, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
 									.addGap(18)
-									.addComponent(list_1, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
+									.addComponent(jlUsedPresets, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
 									.addGap(18)
 									.addGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING, false)
 										.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(button_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(button, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(button_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(btnDown, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-								.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(jbRemovePresetFromUsed, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(jbAddPresetToUsed, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(jbMoveUp, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(jbMoveDown, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+								.addComponent(tbProgramID, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblId))
 							.addContainerGap(123, Short.MAX_VALUE))
 				);
@@ -302,15 +349,15 @@ public class MainWindow {
 								.addGroup(gl_programsPanel.createSequentialGroup()
 									.addGap(16)
 									.addGroup(gl_programsPanel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(list_1, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE)
-										.addComponent(list, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE)))
+										.addComponent(jlUsedPresets, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE)
+										.addComponent(jlUnusedPresets, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE)))
 								.addGroup(gl_programsPanel.createSequentialGroup()
 									.addGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING)
 										.addGroup(gl_programsPanel.createSequentialGroup()
 											.addGap(20)
-											.addComponent(button)
+											.addComponent(jbAddPresetToUsed)
 											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(button_1))
+											.addComponent(jbRemovePresetFromUsed))
 										.addGroup(gl_programsPanel.createSequentialGroup()
 											.addContainerGap()
 											.addComponent(lblSelectProgram)
@@ -322,16 +369,16 @@ public class MainWindow {
 											.addGap(51)
 											.addComponent(lblName)
 											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+											.addComponent(tbProgramName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 											.addGap(15)
 											.addComponent(lblId)
 											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+											.addComponent(tbProgramID, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 										.addGroup(gl_programsPanel.createSequentialGroup()
 											.addGap(42)
-											.addComponent(button_2)
+											.addComponent(jbMoveUp)
 											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(btnDown)))
+											.addComponent(jbMoveDown)))
 									.addGap(10)
 									.addComponent(btnNewButton)))
 							.addContainerGap(66, Short.MAX_VALUE))
@@ -417,18 +464,19 @@ public class MainWindow {
 	}
 
 	private void initData() {
-		mwdp.getPresets(new GetPresetsCallback());
-		mwdp.getPrograms(new GetProgramsCallback());
-		jcPresets.addActionListener(new SelectedProgramItemChanged());
+		mwdp.getPresetsAsync(new GetPresetsCallback());
+		mwdp.getProgramsAsync(new GetProgramsCallback());
+		jcPresets.addActionListener(new SelectedPresetItemChanged());
+		jcPrograms.addActionListener(new SelectedProgramItemChanged());
 	}
 
 	public class GetPresetsCallback implements ICallback {
 
 		@Override
 		public void onSuccess(Object object) {
-			HashMap<Integer, Preset> presets = ((HashMap<Integer, Preset>) object);
-			for (Entry x : presets.entrySet()) {
-				jcPresets.addItem((Preset) x.getValue());
+			List<Preset> presets = ((List<Preset>) object);
+			for (Preset x : presets) {
+				jcPresets.addItem(x);
 			}
 		}
 
@@ -446,6 +494,10 @@ public class MainWindow {
 			List<Program> programs = ((List<Program>) object);
 			for (Program x : programs) {
 				jcPrograms.addItem((Program) x);
+			}
+			List<Preset> presets = mwdp.getPresets();
+			for(Preset pres : presets){
+				unusedListModel.addElement(pres);
 			}
 		}
 
@@ -479,14 +531,14 @@ public class MainWindow {
 		
 	}
 	
-	public class SelectedProgramItemChanged implements ActionListener{
+	private class SelectedPresetItemChanged implements ActionListener{
 
 		@SuppressWarnings("unchecked")
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JComboBox<Preset> box = (JComboBox<Preset>)e.getSource();	
 			Preset selectedPreset = (Preset)box.getSelectedItem();
-			jtfPresetID.setText(selectedPreset.getPresetID() + "");
+			jtfPresetID.setText(selectedPreset.getID());
 			int[] leds = selectedPreset.getLEDValues();
 			jtfLed1on.setText(leds[0] + "");
 			jtfLed1off.setText(leds[1] + "");
@@ -497,7 +549,31 @@ public class MainWindow {
 			
 			jtfLux.setText(selectedPreset.getLUX() + "");
 		}
+	}
+	
+	private class SelectedProgramItemChanged implements ActionListener{
 
+		@SuppressWarnings("unchecked")
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() instanceof JComboBox<?>){
+				JComboBox<Program> box =(JComboBox<Program>) e.getSource();
+				Program selectedProgram = (Program) box.getSelectedItem();
+				tbProgramName.setText(selectedProgram.getProgramCode());
+				tbProgramID.setText(selectedProgram.getDesc());
+				usedListModel.clear();
+				unusedListModel.clear();
+				List<Preset> allPresetList = mwdp.getPresets();
+				List<Preset> selectedPresetList = selectedProgram.getPresetList();
+				for(Preset pres : allPresetList){
+					if(selectedPresetList.contains(pres)){
+						usedListModel.addElement(pres);
+					}else{
+						unusedListModel.addElement(pres);
+					}
+				}
+			}
+		}
 		
 	}
 }

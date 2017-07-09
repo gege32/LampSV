@@ -8,9 +8,10 @@ import hu.gehorvath.lampsv.core.Framework;
 import hu.gehorvath.lampsv.core.Preset;
 import hu.gehorvath.lampsv.core.Program;
 
+
 public class UIDataProvider {
 
-	public static final Map<Integer, Preset> getPresets(){
+	public static final List<Preset> getPresets(){
 		return Framework.getPresetProvider().getAllPreset();
 	}
 	

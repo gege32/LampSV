@@ -45,7 +45,7 @@ public class Preset {
 		return measuredLUX;
 	}
 	
-	public final int getPresetID(){
+	public final int getIntId(){
 		return presetID;
 	}
 	
