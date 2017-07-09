@@ -19,7 +19,9 @@ public class Program {
 	@XmlElementWrapper(name="presets")
 	List<Preset> presetList = new LinkedList<>();
 	
-	public Program(){}
+	public Program(){
+		programCode = 0x00;
+	}
 	
 	public Program(char programCode){
 		this.programCode = programCode;
@@ -33,4 +35,18 @@ public class Program {
 	public String getID(){
 		return programCode + "";
 	}
+	
+	public String toString(){
+		if(programCode == 0x00) return "New...";
+		return Character.toString(programCode);
+	}
+	
+	public void setPresets(List<Preset> presets){
+		this.presetList = presets;
+	}
+	
+	public void setProgramCode(char programCode){
+		this.programCode = programCode;
+	}
+	
 }

@@ -1,11 +1,14 @@
 package hu.gehorvath.lampsv.ui;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import javax.swing.GroupLayout;
@@ -14,28 +17,20 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.BevelBorder;
 
-import hu.gehorvath.lampsv.core.Preset;
-import hu.gehorvath.lampsv.ui.data.ICallback;
-import javax.swing.JCheckBox;
-import java.awt.BorderLayout;
-import javax.swing.JTable;
-import javax.swing.border.LineBorder;
-
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
 
-import java.awt.Color;
-import javax.swing.JSeparator;
-import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.JList;
-import java.awt.Panel;
+import hu.gehorvath.lampsv.core.Preset;
+import hu.gehorvath.lampsv.core.Program;
+import hu.gehorvath.lampsv.ui.data.ICallback;
 
 public class MainWindow {
 
@@ -54,6 +49,7 @@ public class MainWindow {
 	private static JTextArea logTextShow;
 
 	JComboBox<Preset> jcPresets;
+	JComboBox<Program> jcPrograms;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -93,6 +89,7 @@ public class MainWindow {
 		JLabel lblSelectPresetTo = new JLabel("Select preset to modify");
 
 		jcPresets = new JComboBox<Preset>();
+		jcPresets.addItem(new Preset());
 
 		JLabel lblPresetid = new JLabel("PresetID:");
 
@@ -242,7 +239,8 @@ public class MainWindow {
 				programsPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 				tabbedPane.addTab("Programs", null, programsPanel, null);
 				
-				JComboBox comboBox = new JComboBox();
+				jcPrograms = new JComboBox<Program>();
+				jcPrograms.addItem(new Program());
 				
 				JList list = new JList();
 				list.setForeground(Color.WHITE);
@@ -281,7 +279,7 @@ public class MainWindow {
 										.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 										.addComponent(lblName)
 										.addComponent(lblSelectProgram)
-										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE))
+										.addComponent(jcPrograms, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE))
 									.addGap(46)
 									.addComponent(list, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
 									.addGap(18)
@@ -317,7 +315,7 @@ public class MainWindow {
 											.addContainerGap()
 											.addComponent(lblSelectProgram)
 											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+											.addComponent(jcPrograms, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING)
 										.addGroup(gl_programsPanel.createSequentialGroup()
@@ -345,7 +343,7 @@ public class MainWindow {
 		controllersPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		tabbedPane.addTab("Controllers", null, controllersPanel, null);
 		
-		JComboBox comboBox_1 = new JComboBox();
+		JComboBox jcControllers = new JComboBox();
 		
 		JLabel lblSelectController = new JLabel("Select controller");
 		
@@ -367,7 +365,7 @@ public class MainWindow {
 				.addGroup(gl_controllersPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(comboBox_1, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(jcControllers, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(lblSelectController, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addGap(63)
 					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.LEADING)
@@ -392,7 +390,7 @@ public class MainWindow {
 						.addComponent(lblName_1))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jcControllers, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addComponent(lblSerialPort)
@@ -420,7 +418,8 @@ public class MainWindow {
 
 	private void initData() {
 		mwdp.getPresets(new GetPresetsCallback());
-		jcPresets.addActionListener(new SelectedItemChanged());
+		mwdp.getPrograms(new GetProgramsCallback());
+		jcPresets.addActionListener(new SelectedProgramItemChanged());
 	}
 
 	public class GetPresetsCallback implements ICallback {
@@ -430,6 +429,23 @@ public class MainWindow {
 			HashMap<Integer, Preset> presets = ((HashMap<Integer, Preset>) object);
 			for (Entry x : presets.entrySet()) {
 				jcPresets.addItem((Preset) x.getValue());
+			}
+		}
+
+		@Override
+		public void onFailed(Exception ex) {
+			// TODO Auto-generated method stub
+		}
+
+	}
+	
+	public class GetProgramsCallback implements ICallback {
+
+		@Override
+		public void onSuccess(Object object) {
+			List<Program> programs = ((List<Program>) object);
+			for (Program x : programs) {
+				jcPrograms.addItem((Program) x);
 			}
 		}
 
@@ -463,7 +479,7 @@ public class MainWindow {
 		
 	}
 	
-	public class SelectedItemChanged implements ActionListener{
+	public class SelectedProgramItemChanged implements ActionListener{
 
 		@SuppressWarnings("unchecked")
 		@Override

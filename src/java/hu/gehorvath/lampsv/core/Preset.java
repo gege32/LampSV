@@ -18,6 +18,7 @@ public class Preset {
 	int measuredLUX;	
 
 	public String toString(){
+		if(presetID == -1) return "New...";
 		return "ID: " + presetID + " - LUX: ~" + measuredLUX;
 	}
 	
@@ -27,7 +28,9 @@ public class Preset {
 		this.measuredLUX = lux;
 	}
 	
-	public Preset(){}
+	public Preset(){
+		presetID = -1;
+	}
 	
 	@XmlID
 	public String getID(){
@@ -44,5 +47,17 @@ public class Preset {
 	
 	public final int getPresetID(){
 		return presetID;
+	}
+	
+	public void setPresetID(int id){
+		this.presetID = id;
+	}
+	
+	public void setLedTiminds(int[] ledTimings){
+		this.ledTimings = ledTimings;
+	}
+	
+	public void setMeasuredLux(int measuredLUX){
+		this.measuredLUX = measuredLUX;
 	}
 }

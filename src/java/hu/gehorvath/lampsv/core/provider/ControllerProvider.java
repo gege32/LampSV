@@ -15,7 +15,7 @@ import hu.gehorvath.lampsv.core.Controller;
 public class ControllerProvider {
 
 	@XmlElementWrapper(name="controllers")
-	@XmlElement(name="controllers")
+	@XmlElement(name="controller")
 	List<Controller> controllers;
 	
 	public List<Controller> getAllControllers(){

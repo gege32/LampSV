@@ -6,10 +6,10 @@ import javax.xml.bind.annotation.XmlIDREF;
 public class Controller {
 	
 	@XmlAttribute
-	String controllerName;
+	private String controllerName;
 	
 	@XmlAttribute
-	String serialPort;
+	private String serialPort;
 	
 	
 	@XmlIDREF
@@ -25,6 +25,18 @@ public class Controller {
 	
 	public String getControllerName(){
 		return controllerName;
+	}
+	
+	public void setControllerName(String name){
+		this.controllerName = name;
+	}
+	
+	public void setSerialPort(String port){
+		this.serialPort = port;
+	}
+	
+	public void setProgram(Program program){
+		this.program = program;
 	}
 
 }
