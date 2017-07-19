@@ -15,6 +15,10 @@ public class Controller {
 	@XmlIDREF
 	Program program;
 	
+	public Controller() {
+		controllerName = "New...";
+	}
+	
 	public Program getContProgram(){
 		return program;
 	}
@@ -37,6 +41,10 @@ public class Controller {
 	
 	public void setProgram(Program program){
 		this.program = program;
+	}
+	
+	public String toString() {
+		return controllerName;
 	}
 
 }

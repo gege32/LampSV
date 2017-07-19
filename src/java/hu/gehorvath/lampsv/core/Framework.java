@@ -1,6 +1,7 @@
 package hu.gehorvath.lampsv.core;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -70,6 +71,8 @@ public class Framework {
 		} catch (JAXBException e) {
 			logger.error("Unmarshalling failed", e);
 		}
+		
+		commService.init();
 	}
 	
 	public static PresetProvider getPresetProvider(){
@@ -138,8 +141,8 @@ public class Framework {
 
 	}
 	
-	public static String[] getAvailableSerialPorts(){
-		return SerialPortList.getPortNames();
+	public static List<String> getAvailableSerialPorts(){
+		return Arrays.asList(SerialPortList.getPortNames());
 	}
 	
 	public static void startMeasurement(Controller controller) {
@@ -156,6 +159,14 @@ public class Framework {
 	
 	public static void loadProgramToController(Controller controller) {
 		commService.loadProgram(controller);
+	}
+	
+	public static boolean isMeasurementRunning(Controller controller) {
+		return commService.isStarted(controller);
+	}
+	
+	public static boolean isInit(Controller controller) {
+		return commService.isInit(controller);
 	}
 	
 }

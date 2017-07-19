@@ -90,4 +90,16 @@ public class MainWindowDataProvider {
 		Framework.loadProgramToController(controller);
 	}
 	
+	public List<String> getAvailableSerialPorts() {
+		return Framework.getAvailableSerialPorts();
+	}
+	
+	public boolean isMeasurementRunning(Controller controller) {
+		return Framework.isMeasurementRunning(controller);
+	}
+	
+	public boolean isInit(Controller controller) {
+		return Framework.isInit(controller);
+	}
+	
 }

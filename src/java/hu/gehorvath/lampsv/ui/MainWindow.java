@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -33,6 +34,8 @@ import javax.swing.border.BevelBorder;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
 
+import hu.gehorvath.lampsv.core.Controller;
+import hu.gehorvath.lampsv.core.Framework;
 import hu.gehorvath.lampsv.core.Preset;
 import hu.gehorvath.lampsv.core.Program;
 
@@ -58,10 +61,17 @@ public class MainWindow {
 	JList<Preset> jlUsedPresets;
 	DefaultListModel<Preset> unusedListModel = new DefaultListModel<>();
 	DefaultListModel<Preset> usedListModel = new DefaultListModel<>();
+	
+	JComboBox<Controller> jcControllers;
+	JComboBox<String> jcSerialPorts;
+	JComboBox<Program> jcControllerPrograms;
+	JLabel jlLoggingStatus;
+	JLabel jlSerialPortAvailable;
+	JLabel jlLampInitializedReady;
 
 	private JTextField tbProgramName;
 	private JTextField tbProgramDesc;
-	private JTextField tfControllerName;
+	private JTextField tbControllerName;
 
 	/**
 	 * Create the application.
@@ -429,22 +439,23 @@ public class MainWindow {
 		controllersPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		tabbedPane.addTab("Controllers", null, controllersPanel, null);
 
-		JComboBox jcControllers = new JComboBox();
+		jcControllers = new JComboBox<Controller>();
+		jcControllers.addActionListener(new SelectedControllerItemChanged());
 
 		JLabel lblSelectController = new JLabel("Select controller");
 
 		JLabel lblName_1 = new JLabel("Name");
 
-		tfControllerName = new JTextField();
-		tfControllerName.setColumns(10);
+		tbControllerName = new JTextField();
+		tbControllerName.setColumns(10);
 
 		JLabel lblSerialPort = new JLabel("Serial port");
 
-		JComboBox cbSerialPorts = new JComboBox();
+		jcSerialPorts = new JComboBox<String>();
 
 		JLabel lblNewLabel = new JLabel("Program");
 
-		JComboBox jcControllerPrograms = new JComboBox();
+		jcControllerPrograms = new JComboBox<Program>();
 		
 		JButton btControllerSave = new JButton("Save");
 		
@@ -454,23 +465,23 @@ public class MainWindow {
 		
 		JButton btLoadProgram = new JButton("Load program to lamp");
 		
-		JLabel jlLoggingStatus = new JLabel("Measurement in progress");
-		jlLoggingStatus.setBackground(Color.GREEN);
+		jlLoggingStatus = new JLabel("Measurement in progress");
 		jlLoggingStatus.setForeground(Color.GREEN);
 		
-		JLabel jlSerialPortAvailable = new JLabel("Serial port available");
+		jlSerialPortAvailable = new JLabel("Serial port available");
 		jlSerialPortAvailable.setForeground(Color.GREEN);
 		
 		JButton btnInitializeLamp = new JButton("Initialize lamp");
 		
-		JLabel lbLampInitializedReady = new JLabel("Lamp initialized, ready to start");
-		lbLampInitializedReady.setForeground(Color.GREEN);
+		jlLampInitializedReady = new JLabel("Lamp initialized, ready to start");
+		jlLampInitializedReady.setForeground(Color.GREEN);
+		
 		GroupLayout gl_controllersPanel = new GroupLayout(controllersPanel);
 		gl_controllersPanel.setHorizontalGroup(
 			gl_controllersPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_controllersPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.TRAILING)
+					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_controllersPanel.createSequentialGroup()
 							.addGroup(gl_controllersPanel.createParallelGroup(Alignment.TRAILING, false)
 								.addComponent(jcControllers, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -478,24 +489,24 @@ public class MainWindow {
 							.addGap(63)
 							.addGroup(gl_controllersPanel.createParallelGroup(Alignment.TRAILING)
 								.addComponent(jcControllerPrograms, Alignment.LEADING, 0, 152, Short.MAX_VALUE)
-								.addComponent(tfControllerName, Alignment.LEADING, 152, 152, 152)
+								.addComponent(tbControllerName, Alignment.LEADING, 152, 152, 152)
 								.addComponent(lblName_1, Alignment.LEADING)
 								.addComponent(lblSerialPort, Alignment.LEADING)
-								.addComponent(cbSerialPorts, Alignment.LEADING, 0, 152, Short.MAX_VALUE)
+								.addComponent(jcSerialPorts, Alignment.LEADING, 0, 152, Short.MAX_VALUE)
 								.addComponent(lblNewLabel, Alignment.LEADING))
-							.addGap(108)
-							.addGroup(gl_controllersPanel.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(btLoadProgram, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(btStopLogging, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(btStartLogging, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(btnInitializeLamp, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(jlSerialPortAvailable)
-								.addComponent(jlLoggingStatus)
-								.addComponent(lbLampInitializedReady))
-							.addGap(200))
+							.addGap(108))
 						.addGroup(gl_controllersPanel.createSequentialGroup()
 							.addComponent(btControllerSave)
-							.addGap(67))))
+							.addPreferredGap(ComponentPlacement.RELATED)))
+					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(btLoadProgram, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btStopLogging, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btStartLogging, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnInitializeLamp, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(jlSerialPortAvailable)
+						.addComponent(jlLoggingStatus)
+						.addComponent(jlLampInitializedReady))
+					.addGap(144))
 		);
 		gl_controllersPanel.setVerticalGroup(
 			gl_controllersPanel.createParallelGroup(Alignment.LEADING)
@@ -507,7 +518,7 @@ public class MainWindow {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(jcControllers, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(tfControllerName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(tbControllerName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btStartLogging))
 					.addGap(18)
 					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.BASELINE)
@@ -516,7 +527,7 @@ public class MainWindow {
 					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_controllersPanel.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(cbSerialPorts, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(jcSerialPorts, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
 							.addComponent(lblNewLabel)
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -529,12 +540,12 @@ public class MainWindow {
 					.addPreferredGap(ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
 					.addComponent(jlSerialPortAvailable)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(lbLampInitializedReady)
+					.addComponent(jlLampInitializedReady)
 					.addGap(8)
-					.addComponent(jlLoggingStatus)
-					.addGap(29)
-					.addComponent(btControllerSave)
-					.addContainerGap())
+					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(jlLoggingStatus)
+						.addComponent(btControllerSave))
+					.addGap(54))
 		);
 		controllersPanel.setLayout(gl_controllersPanel);
 
@@ -575,6 +586,26 @@ public class MainWindow {
 		}
 		for (Preset pres : presets) {
 			unusedListModel.addElement(pres);
+		}
+		
+		//fill controllers
+		List<Controller> controllers = mwdp.getControllers();
+		jcControllers.removeAllItems();
+		jcControllers.addItem(new Controller());
+		
+		jcControllerPrograms.removeAllItems();
+		for(Controller cont : controllers) {
+			jcControllers.addItem(cont);
+		}
+		List<String> availPorts = mwdp.getAvailableSerialPorts();
+		for(Controller cont: controllers) {
+			availPorts.remove(cont.getSerailPort());
+		}
+		for(String serialPort : availPorts) {
+			jcSerialPorts.addItem(serialPort);
+		}
+		for(Program prog : programs) {
+			jcControllerPrograms.addItem(prog);
 		}
 	}
 
@@ -662,6 +693,54 @@ public class MainWindow {
 			}
 		}
 
+	}
+	
+	private class SelectedControllerItemChanged implements ActionListener{
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() instanceof JComboBox<?>) {
+				JComboBox<Controller> box = (JComboBox<Controller>) e.getSource();
+				Controller selectedController = (Controller) box.getSelectedItem();
+				if(selectedController != null && !selectedController.getName().equals("New...")) {
+					tbControllerName.setText(selectedController.getName());
+					
+					jcSerialPorts.removeAllItems();
+					jcSerialPorts.addItem(selectedController.getSerailPort());
+					List<String> availPorts = mwdp.getAvailableSerialPorts();
+					for(String port : availPorts) {
+						jcSerialPorts.addItem(port);
+					}
+					jcControllerPrograms.setSelectedItem(selectedController.getContProgram());
+					if(availPorts.contains(selectedController.getSerailPort())) {
+						jlSerialPortAvailable.setText("The selected serial port is available!");
+						jlSerialPortAvailable.setForeground(Color.GREEN);
+					}else {
+						jlSerialPortAvailable.setText("The selected serial port is NOT available!");
+						jlSerialPortAvailable.setForeground(Color.RED);
+					}
+					if(mwdp.isInit(selectedController)) {
+						jlLampInitializedReady.setText("The selected controller is initialized!");
+						jlLampInitializedReady.setForeground(Color.GREEN);
+					}else {
+						jlLampInitializedReady.setText("The selected controller is NOT initialized!");
+						jlLampInitializedReady.setForeground(Color.RED);
+					}
+					if(mwdp.isMeasurementRunning(selectedController)) {
+						jlLoggingStatus.setText("The selected controller is started!");
+						jlLoggingStatus.setForeground(Color.GREEN);
+					}else {
+						jlLoggingStatus.setText("The selected controller is stopped!");
+						jlLoggingStatus.setForeground(Color.RED);
+					}
+					
+					
+				}
+			}
+			
+		}
+		
 	}
 
 	private class IntegerValidator implements FocusListener {
