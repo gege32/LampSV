@@ -1,5 +1,6 @@
 package hu.gehorvath.lampsv.core;
 
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -67,6 +68,28 @@ public class Program {
 	}
 	public String getDesc(){
 		return this.description;
+	}
+	
+	public List<byte[]> getData(){
+		List<byte[]> toreturn = new LinkedList<byte[]>();
+		for(Preset preset : presetList){
+			byte[] temp = new byte[8];
+			temp[0] = '$';
+			int i = 1;
+			for(int value : preset.getLEDValues()){
+				temp[i] = (byte)value;
+				i++;
+			}
+			toreturn.add(temp);
+		}
+		
+		
+		return toreturn;
+	}
+	
+	public byte[] getHeader(){
+		int maxpreset = presetList.size() - 1;
+		return new byte[]{'#',(byte)maxpreset, (byte) characterCode};
 	}
 	
 }

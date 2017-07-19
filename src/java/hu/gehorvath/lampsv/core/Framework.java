@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -16,12 +15,15 @@ import org.apache.log4j.Logger;
 import hu.gehorvath.lampsv.core.provider.ControllerProvider;
 import hu.gehorvath.lampsv.core.provider.PresetProvider;
 import hu.gehorvath.lampsv.core.provider.ProgramProvider;
+import hu.gehorvath.lampsv.core.service.CommunicationService;
 
 public class Framework {
 	
 	static Logger logger = Logger.getLogger(Framework.class);
 		
 	private static CoreData coreData;
+	
+	private static CommunicationService commService = new CommunicationService();
 	
 	@XmlRootElement
 	@XmlAccessorType(XmlAccessType.FIELD)
@@ -71,6 +73,10 @@ public class Framework {
 	
 	public static ControllerProvider getControllerProvider(){
 		return coreData.getContrProv();
+	}
+	
+	public static CommunicationService getCommunicationService() {
+		return commService;
 	}
 
 }
