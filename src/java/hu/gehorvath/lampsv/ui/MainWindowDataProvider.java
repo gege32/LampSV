@@ -1,5 +1,6 @@
 package hu.gehorvath.lampsv.ui;
 
+import java.awt.Frame;
 import java.util.HashMap;
 import java.util.List;
 
@@ -61,16 +62,32 @@ public class MainWindowDataProvider {
 	
 	
 	//If old is null, then its an addition, if not, then a modification
-	public void savePreset(Preset newPeset, Preset oldPreset){
-		
+	public void savePreset(Preset newPreset, Preset oldPreset){
+		Framework.savePreset(newPreset, oldPreset);
 	}
 	
 	public void saveProgram(Program newProgram, Program oldProgram){
-		
+		Framework.saveProgram(newProgram, oldProgram);
 	}
 	
 	public void saveController(Controller newController, Controller oldController){
-		
+		Framework.saveController(newController, oldController);
+	}
+	
+	public void startMeasurement(Controller controller) {
+		Framework.startMeasurement(controller);
+	}
+	
+	public void stopMeasurement(Controller controller) {
+		Framework.stopMeasurement(controller);
+	}
+	
+	public void initController(Controller controller) {
+		Framework.initController(controller);
+	}
+	
+	public void loadProgramToController(Controller controller) {
+		Framework.loadProgramToController(controller);
 	}
 	
 }

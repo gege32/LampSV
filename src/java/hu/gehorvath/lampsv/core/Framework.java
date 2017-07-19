@@ -2,9 +2,13 @@ package hu.gehorvath.lampsv.core;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -16,6 +20,7 @@ import hu.gehorvath.lampsv.core.provider.ControllerProvider;
 import hu.gehorvath.lampsv.core.provider.PresetProvider;
 import hu.gehorvath.lampsv.core.provider.ProgramProvider;
 import hu.gehorvath.lampsv.core.service.CommunicationService;
+import jssc.SerialPortList;
 
 public class Framework {
 	
@@ -24,6 +29,12 @@ public class Framework {
 	private static CoreData coreData;
 	
 	private static CommunicationService commService = new CommunicationService();
+		
+	private static Marshaller marshaller;
+	
+	private static File dataFile = new File("data/data.xml");
+	
+	private static Lock lock = new ReentrantLock();
 	
 	@XmlRootElement
 	@XmlAccessorType(XmlAccessType.FIELD)
@@ -45,8 +56,6 @@ public class Framework {
 
 	public void startFramework() {
 		
-		File dataFile = new File("data/data.xml");
-
 		try {
 			
 			logger.info("Starting up framework!");
@@ -55,11 +64,11 @@ public class Framework {
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
 			coreData = (CoreData) jaxbUnmarshaller.unmarshal(dataFile);
+			
 
-
+			marshaller = jaxbContext.createMarshaller();
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Unmarshalling failed", e);
 		}
 	}
 	
@@ -78,5 +87,75 @@ public class Framework {
 	public static CommunicationService getCommunicationService() {
 		return commService;
 	}
+	
+	//If old is null, then its an addition, if not, then a modification
+	public static void savePreset(Preset newPreset, Preset oldPreset){
+		
+		List<Preset> presets = getPresetProvider().getAllPreset();
+		
+		int newID = 0;
+		for(Preset preset : presets) {
+			if(preset.getIntId() > newID) {
+				newID = preset.getIntId();
+			}
+		}
+		newID++;
+		
+		if(oldPreset == null) {
+			newPreset.setPresetID(newID);
+			presets.add(newPreset);
+		}else {
+			oldPreset.setLedTiminds(newPreset.getLEDValues());
+			oldPreset.setMeasuredLux(newPreset.getLUX());
+		}
+		
+		writeDataFile();
+	}
+	
+	public static void saveProgram(Program newProgram, Program oldProgram){
+		List<Program> programs = getProgramProvider().getAllPrograms();
+		if(oldProgram == null) {
+			programs.add(newProgram);
+		}else {
+			programs.remove(oldProgram);
+			programs.add(newProgram);
+		}
+		writeDataFile();
+	}
+	
+	public static void saveController(Controller newController, Controller oldController){
+	
+		writeDataFile();
+	}
+	
+	private static void writeDataFile() {
+		try {
+			marshaller.marshal(coreData, dataFile);
+			logger.info("Data file saved!");
+		} catch (JAXBException e) {
+			logger.error("Save failed", e);
+		}
 
+	}
+	
+	public static String[] getAvailableSerialPorts(){
+		return SerialPortList.getPortNames();
+	}
+	
+	public static void startMeasurement(Controller controller) {
+		commService.startLamp(controller);
+	}
+	
+	public static void stopMeasurement(Controller controller) {
+		commService.stopLamp(controller);
+	}
+	
+	public static void initController(Controller controller) {
+		commService.initLamp(controller);
+	}
+	
+	public static void loadProgramToController(Controller controller) {
+		commService.loadProgram(controller);
+	}
+	
 }

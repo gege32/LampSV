@@ -28,6 +28,7 @@ public class Program {
 	List<Preset> presetList = new LinkedList<>();
 	
 	public Program(){
+		characterCode = 0x00;
 	}
 	
 	public Program(int code, int id, List<Preset> presets){
@@ -68,6 +69,10 @@ public class Program {
 	}
 	public String getDesc(){
 		return this.description;
+	}
+	
+	public int getCharacterCode() {
+		return characterCode;
 	}
 	
 	public List<byte[]> getData(){

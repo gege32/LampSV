@@ -236,5 +236,9 @@ public class Protocol {
 	public boolean isEnabled() {
 		return this.enabled;
 	}
+	
+	public boolean isInit() {
+		return this.initialized;
+	}
 
 }
