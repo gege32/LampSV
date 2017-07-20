@@ -10,9 +10,11 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -38,6 +40,7 @@ import hu.gehorvath.lampsv.core.Controller;
 import hu.gehorvath.lampsv.core.Framework;
 import hu.gehorvath.lampsv.core.Preset;
 import hu.gehorvath.lampsv.core.Program;
+import jssc.SerialPortException;
 
 public class MainWindow {
 
@@ -61,7 +64,7 @@ public class MainWindow {
 	JList<Preset> jlUsedPresets;
 	DefaultListModel<Preset> unusedListModel = new DefaultListModel<>();
 	DefaultListModel<Preset> usedListModel = new DefaultListModel<>();
-	
+
 	JComboBox<Controller> jcControllers;
 	JComboBox<String> jcSerialPorts;
 	JComboBox<Program> jcControllerPrograms;
@@ -91,7 +94,7 @@ public class MainWindow {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 718, 387);
+		frame.setBounds(100, 100, 643, 433);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 
@@ -106,17 +109,22 @@ public class MainWindow {
 		tabbedPane.addTab("Presets", null, presetsPanel, null);
 
 		JLabel lblSelectPresetTo = new JLabel("Select preset to modify");
+		lblSelectPresetTo.setBounds(12, 13, 142, 14);
 
 		jcPresets = new JComboBox<Preset>();
+		jcPresets.setBounds(12, 33, 142, 20);
 
 		JLabel lblPresetid = new JLabel("PresetID:");
+		lblPresetid.setBounds(183, 13, 63, 14);
 
 		jtfPresetID = new JTextField();
+		jtfPresetID.setBounds(256, 10, 86, 20);
 		jtfPresetID.addFocusListener(new IntegerValidator());
 		jtfPresetID.setEnabled(false);
 		jtfPresetID.setColumns(10);
 
 		JButton btnSave = new JButton("Save");
+		btnSave.setBounds(472, 240, 79, 23);
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (((Preset) jcPresets.getSelectedItem()).getIntId() == -1) {
@@ -137,136 +145,80 @@ public class MainWindow {
 		});
 
 		JLabel lblLedOn = new JLabel("LED1 on:");
+		lblLedOn.setBounds(183, 54, 63, 14);
 
 		jtfLed1on = new JTextField();
+		jtfLed1on.setBounds(256, 51, 86, 20);
 		jtfLed1on.addFocusListener(new IntegerValidator());
 		jtfLed1on.setColumns(10);
 
 		jtfLed1off = new JTextField();
+		jtfLed1off.setBounds(256, 89, 86, 20);
 		jtfLed1off.addFocusListener(new IntegerValidator());
 		jtfLed1off.setColumns(10);
 
 		jtfLed2on = new JTextField();
+		jtfLed2on.setBounds(256, 127, 86, 20);
 		jtfLed2on.addFocusListener(new IntegerValidator());
 		jtfLed2on.setColumns(10);
 
 		jtfLed2off = new JTextField();
+		jtfLed2off.setBounds(256, 165, 86, 20);
 		jtfLed2off.addFocusListener(new IntegerValidator());
 		jtfLed2off.setColumns(10);
 
 		jtfLed3on = new JTextField();
+		jtfLed3on.setBounds(256, 203, 86, 20);
 		jtfLed3on.addFocusListener(new IntegerValidator());
 		jtfLed3on.setColumns(10);
 
 		jtfLed3off = new JTextField();
+		jtfLed3off.setBounds(256, 241, 86, 20);
 		jtfLed3off.addFocusListener(new IntegerValidator());
 		jtfLed3off.setColumns(10);
 
 		JLabel lblLedOff = new JLabel("LED1 off:");
+		lblLedOff.setBounds(183, 92, 63, 14);
 
 		JLabel lblLedOn_1 = new JLabel("LED2 on:");
+		lblLedOn_1.setBounds(183, 130, 63, 14);
 
 		JLabel lblLedOff_1 = new JLabel("LED2 off:");
+		lblLedOff_1.setBounds(183, 168, 63, 14);
 
 		JLabel lblLedOn_2 = new JLabel("LED3 on:");
+		lblLedOn_2.setBounds(183, 206, 63, 14);
 
 		JLabel lblLedOff_2 = new JLabel("LED3 off:");
+		lblLedOff_2.setBounds(183, 244, 63, 14);
 
 		jtfLux = new JTextField();
+		jtfLux.setBounds(472, 10, 86, 20);
 		jtfLux.addFocusListener(new IntegerValidator());
 		jtfLux.setColumns(10);
 
 		JLabel lblMeasuredLux = new JLabel("Measured LUX:");
-		GroupLayout gl_presetsPanel = new GroupLayout(presetsPanel);
-		gl_presetsPanel.setHorizontalGroup(gl_presetsPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_presetsPanel.createSequentialGroup().addContainerGap()
-						.addGroup(gl_presetsPanel.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(jcPresets, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
-								.addComponent(lblSelectPresetTo, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addGap(41)
-						.addGroup(gl_presetsPanel.createParallelGroup(Alignment.LEADING).addComponent(lblLedOn)
-								.addComponent(lblPresetid).addComponent(lblLedOff).addComponent(lblLedOn_1)
-								.addComponent(lblLedOff_1).addComponent(lblLedOn_2).addComponent(lblLedOff_2))
-						.addGap(27)
-						.addGroup(gl_presetsPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(jtfLed3on, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(jtfLed2off, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(jtfLed2on, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(jtfLed1off, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(jtfLed1on, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_presetsPanel.createParallelGroup(Alignment.TRAILING, false)
-										.addGroup(gl_presetsPanel.createSequentialGroup()
-												.addComponent(jtfLed3off, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE,
-														Short.MAX_VALUE)
-												.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 79,
-														GroupLayout.PREFERRED_SIZE))
-										.addGroup(Alignment.LEADING,
-												gl_presetsPanel.createSequentialGroup()
-														.addComponent(jtfPresetID, GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-														.addGap(18).addComponent(lblMeasuredLux).addGap(18)
-														.addComponent(jtfLux, GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-						.addContainerGap(32, Short.MAX_VALUE)));
-		gl_presetsPanel.setVerticalGroup(gl_presetsPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_presetsPanel
-				.createSequentialGroup().addContainerGap()
-				.addGroup(gl_presetsPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_presetsPanel
-						.createSequentialGroup()
-						.addGroup(gl_presetsPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(jtfPresetID, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblPresetid).addComponent(lblMeasuredLux).addComponent(jtfLux,
-										GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addGap(18)
-						.addGroup(gl_presetsPanel.createParallelGroup(Alignment.TRAILING).addGroup(gl_presetsPanel
-								.createSequentialGroup()
-								.addGroup(gl_presetsPanel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(jtfLed1on, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblLedOn))
-								.addGap(18)
-								.addGroup(gl_presetsPanel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(jtfLed1off, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblLedOff))
-								.addGap(18)
-								.addGroup(gl_presetsPanel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(jtfLed2on, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblLedOn_1))
-								.addGap(18)
-								.addGroup(gl_presetsPanel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(jtfLed2off, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblLedOff_1))
-								.addGap(18)
-								.addGroup(gl_presetsPanel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(jtfLed3on, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblLedOn_2))
-								.addGap(18)
-								.addGroup(gl_presetsPanel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(jtfLed3off, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblLedOff_2)))
-								.addGroup(gl_presetsPanel.createSequentialGroup().addComponent(btnSave)
-										.addPreferredGap(ComponentPlacement.RELATED))))
-						.addGroup(gl_presetsPanel.createSequentialGroup().addComponent(lblSelectPresetTo)
-								.addPreferredGap(ComponentPlacement.RELATED).addComponent(jcPresets,
-										GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)))
-				.addGap(81)));
-		presetsPanel.setLayout(gl_presetsPanel);
+		lblMeasuredLux.setBounds(370, 13, 92, 14);
+		presetsPanel.setLayout(null);
+		presetsPanel.add(jcPresets);
+		presetsPanel.add(lblSelectPresetTo);
+		presetsPanel.add(lblLedOn);
+		presetsPanel.add(lblPresetid);
+		presetsPanel.add(lblLedOff);
+		presetsPanel.add(lblLedOn_1);
+		presetsPanel.add(lblLedOff_1);
+		presetsPanel.add(lblLedOn_2);
+		presetsPanel.add(lblLedOff_2);
+		presetsPanel.add(jtfLed3on);
+		presetsPanel.add(jtfLed2off);
+		presetsPanel.add(jtfLed2on);
+		presetsPanel.add(jtfLed1off);
+		presetsPanel.add(jtfLed1on);
+		presetsPanel.add(jtfLed3off);
+		presetsPanel.add(btnSave);
+		presetsPanel.add(jtfPresetID);
+		presetsPanel.add(lblMeasuredLux);
+		presetsPanel.add(jtfLux);
 
 		JPanel programsPanel = new JPanel();
 		programsPanel.setBackground(Color.GRAY);
@@ -274,13 +226,17 @@ public class MainWindow {
 		tabbedPane.addTab("Programs", null, programsPanel, null);
 
 		jcPrograms = new JComboBox<Program>();
+		jcPrograms.setBounds(12, 33, 138, 20);
 		jcPrograms.addItem(new Program());
 
 		jlUnusedPresets = new JList<Preset>(unusedListModel);
+		jlUnusedPresets.setBounds(196, 35, 138, 244);
 
 		jlUsedPresets = new JList<Preset>(usedListModel);
+		jlUsedPresets.setBounds(344, 35, 136, 244);
 
 		JButton jbAddPresetToUsed = new JButton("Add");
+		jbAddPresetToUsed.setBounds(506, 32, 72, 23);
 		jbAddPresetToUsed.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -291,6 +247,7 @@ public class MainWindow {
 		});
 
 		JButton jbRemovePresetFromUsed = new JButton("Del");
+		jbRemovePresetFromUsed.setBounds(506, 66, 72, 23);
 		jbRemovePresetFromUsed.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -301,14 +258,15 @@ public class MainWindow {
 		});
 
 		JButton btSaveProgram = new JButton("Save");
+		btSaveProgram.setBounds(506, 256, 72, 23);
 		btSaveProgram.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (((Program) jcPrograms.getSelectedItem()).getCharacterCode() == 0x00) {
+				if (((Program) jcPrograms.getSelectedItem()).getIntID() == -1) {
 					Program newProgram = ((Program) jcPrograms.getSelectedItem());
 					newProgram.setcharacterCode(tbProgramName.getText().getBytes()[0]);
 					newProgram.setDescription(tbProgramDesc.getText());
 					List<Preset> newPresetList = new ArrayList<Preset>();
-					for(int i = 0; i <= usedListModel.getSize() - 1; i++) {
+					for (int i = 0; i <= usedListModel.getSize() - 1; i++) {
 						newPresetList.add(usedListModel.get(i));
 					}
 					newProgram.setPresets(newPresetList);
@@ -319,11 +277,11 @@ public class MainWindow {
 					newProgram.setcharacterCode(tbProgramName.getText().getBytes()[0]);
 					newProgram.setDescription(tbProgramDesc.getText());
 					List<Preset> newPresetList = new ArrayList<Preset>();
-					for(int i = 0; i <= usedListModel.getSize() - 1; i++) {
+					for (int i = 0; i <= usedListModel.getSize() - 1; i++) {
 						newPresetList.add(usedListModel.get(i));
 					}
 					newProgram.setPresets(newPresetList);
-					
+
 					mwdp.saveProgram(newProgram, ((Program) jcPrograms.getSelectedItem()));
 					initData();
 				}
@@ -331,18 +289,44 @@ public class MainWindow {
 		});
 
 		tbProgramName = new JTextField();
+		tbProgramName.setBounds(12, 145, 138, 20);
 		tbProgramName.setColumns(10);
+		tbProgramName.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (e.getSource() instanceof JTextField) {
+					JTextField textField = (JTextField) e.getSource();
+					if (textField.getText() != null && !textField.getText().equals("")) {
+						if (textField.getText().length() > 1) {
+							JOptionPane.showMessageDialog(null, "Character code of program must be only one character!",
+									"Format Error", JOptionPane.ERROR_MESSAGE);
+							textField.setText("");
+						}
+					}
+				}
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+			}
+		});
 
 		JLabel lblName = new JLabel("Character ID (unique)");
+		lblName.setBounds(12, 125, 138, 14);
 
 		tbProgramDesc = new JTextField();
+		tbProgramDesc.setBounds(12, 200, 138, 20);
 		tbProgramDesc.setColumns(10);
 
 		JLabel lblId = new JLabel("Description");
+		lblId.setBounds(12, 180, 138, 14);
 
 		JLabel lblSelectProgram = new JLabel("Select program");
+		lblSelectProgram.setBounds(12, 13, 138, 14);
 
 		JButton jbMoveUp = new JButton("Up");
+		jbMoveUp.setBounds(506, 121, 72, 23);
 		jbMoveUp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -356,6 +340,7 @@ public class MainWindow {
 		});
 
 		JButton jbMoveDown = new JButton("Down");
+		jbMoveDown.setBounds(506, 157, 72, 23);
 		jbMoveUp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -367,72 +352,28 @@ public class MainWindow {
 				}
 			}
 		});
+		programsPanel.setLayout(null);
+		programsPanel.add(tbProgramName);
+		programsPanel.add(lblName);
+		programsPanel.add(lblSelectProgram);
+		programsPanel.add(jcPrograms);
+		programsPanel.add(jlUnusedPresets);
+		programsPanel.add(jlUsedPresets);
+		programsPanel.add(btSaveProgram);
+		programsPanel.add(jbRemovePresetFromUsed);
+		programsPanel.add(jbAddPresetToUsed);
+		programsPanel.add(jbMoveUp);
+		programsPanel.add(jbMoveDown);
+		programsPanel.add(tbProgramDesc);
+		programsPanel.add(lblId);
 
-		GroupLayout gl_programsPanel = new GroupLayout(programsPanel);
-		gl_programsPanel.setHorizontalGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_programsPanel.createSequentialGroup().addContainerGap().addGroup(gl_programsPanel
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_programsPanel.createSequentialGroup()
-								.addGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING)
-										.addComponent(tbProgramName, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblName).addComponent(lblSelectProgram).addComponent(jcPrograms,
-												GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE))
-								.addGap(46)
-								.addComponent(jlUnusedPresets, GroupLayout.PREFERRED_SIZE, 138,
-										GroupLayout.PREFERRED_SIZE)
-								.addGap(18)
-								.addComponent(
-										jlUsedPresets, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
-								.addGap(18)
-								.addGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(btSaveProgram, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)
-										.addComponent(jbRemovePresetFromUsed, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(jbAddPresetToUsed, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(jbMoveUp, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)
-										.addComponent(jbMoveDown, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)))
-						.addComponent(tbProgramDesc, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblId)).addContainerGap(123, Short.MAX_VALUE)));
-		gl_programsPanel.setVerticalGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_programsPanel.createSequentialGroup().addGroup(gl_programsPanel
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_programsPanel.createSequentialGroup().addGap(16)
-								.addGroup(gl_programsPanel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(jlUsedPresets, GroupLayout.PREFERRED_SIZE, 244,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(jlUnusedPresets, GroupLayout.PREFERRED_SIZE, 244,
-												GroupLayout.PREFERRED_SIZE)))
-						.addGroup(gl_programsPanel.createSequentialGroup().addGroup(gl_programsPanel
-								.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_programsPanel.createSequentialGroup().addGap(20)
-										.addComponent(jbAddPresetToUsed).addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(jbRemovePresetFromUsed))
-								.addGroup(gl_programsPanel.createSequentialGroup().addContainerGap()
-										.addComponent(lblSelectProgram).addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(jcPrograms, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)))
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addGroup(gl_programsPanel.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_programsPanel.createSequentialGroup().addGap(51)
-												.addComponent(lblName).addPreferredGap(ComponentPlacement.RELATED)
-												.addComponent(tbProgramName, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addGap(15).addComponent(lblId)
-												.addPreferredGap(ComponentPlacement.RELATED).addComponent(tbProgramDesc,
-														GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-														GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_programsPanel.createSequentialGroup().addGap(42)
-												.addComponent(jbMoveUp).addPreferredGap(ComponentPlacement.RELATED)
-												.addComponent(jbMoveDown)))
-								.addGap(10).addComponent(btSaveProgram)))
-						.addContainerGap(66, Short.MAX_VALUE)));
-		programsPanel.setLayout(gl_programsPanel);
+		JLabel lblAllPresets = new JLabel("All presets");
+		lblAllPresets.setBounds(196, 13, 138, 14);
+		programsPanel.add(lblAllPresets);
+
+		JLabel lblPresetsUsedIn = new JLabel("Presets used in program");
+		lblPresetsUsedIn.setBounds(344, 13, 136, 14);
+		programsPanel.add(lblPresetsUsedIn);
 
 		JPanel controllersPanel = new JPanel();
 		controllersPanel.setBackground(Color.GRAY);
@@ -440,114 +381,139 @@ public class MainWindow {
 		tabbedPane.addTab("Controllers", null, controllersPanel, null);
 
 		jcControllers = new JComboBox<Controller>();
+		jcControllers.setBounds(12, 34, 122, 20);
 		jcControllers.addActionListener(new SelectedControllerItemChanged());
 
 		JLabel lblSelectController = new JLabel("Select controller");
+		lblSelectController.setBounds(12, 13, 122, 14);
 
 		JLabel lblName_1 = new JLabel("Name");
+		lblName_1.setBounds(152, 13, 196, 14);
 
 		tbControllerName = new JTextField();
+		tbControllerName.setBounds(152, 34, 196, 20);
 		tbControllerName.setColumns(10);
 
 		JLabel lblSerialPort = new JLabel("Serial port");
+		lblSerialPort.setBounds(152, 65, 196, 14);
 
 		jcSerialPorts = new JComboBox<String>();
+		jcSerialPorts.setBounds(152, 90, 196, 20);
 
 		JLabel lblNewLabel = new JLabel("Program");
+		lblNewLabel.setBounds(152, 121, 196, 14);
 
 		jcControllerPrograms = new JComboBox<Program>();
-		
+		jcControllerPrograms.setBounds(152, 146, 196, 20);
+
 		JButton btControllerSave = new JButton("Save");
-		
+		btControllerSave.setBounds(453, 303, 124, 23);
+		btControllerSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (((Controller) jcControllers.getSelectedItem()).getId() == -1) {
+					Controller newController = ((Controller) jcControllers.getSelectedItem());
+					newController.setControllerName(tbControllerName.getText());
+					newController.setProgram((Program) jcControllerPrograms.getSelectedItem());
+					newController.setSerialPort((String) jcSerialPorts.getSelectedItem());
+					mwdp.saveController(newController, null);
+					initData();
+				} else {
+					Controller newController = new Controller();
+					newController.setControllerName(tbControllerName.getText());
+					newController.setProgram((Program) jcControllerPrograms.getSelectedItem());
+					newController.setSerialPort((String) jcSerialPorts.getSelectedItem());
+					mwdp.saveController(newController, ((Controller) jcControllers.getSelectedItem()));
+					initData();
+				}
+			}
+		});
+
 		JButton btStartLogging = new JButton("Start measurement");
-		
+		btStartLogging.setBounds(446, 33, 131, 23);
+		btStartLogging.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mwdp.startMeasurement((Controller) jcControllers.getSelectedItem());
+			}
+		});
+
 		JButton btStopLogging = new JButton("Stop measurement");
-		
+		btStopLogging.setBounds(446, 74, 131, 23);
+		btStopLogging.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mwdp.stopMeasurement((Controller) jcControllers.getSelectedItem());
+			}
+		});
+
 		JButton btLoadProgram = new JButton("Load program to lamp");
-		
-		jlLoggingStatus = new JLabel("Measurement in progress");
-		jlLoggingStatus.setForeground(Color.GREEN);
-		
-		jlSerialPortAvailable = new JLabel("Serial port available");
-		jlSerialPortAvailable.setForeground(Color.GREEN);
-		
+		btLoadProgram.setBounds(446, 115, 131, 23);
+		btLoadProgram.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mwdp.loadProgramToController((Controller) jcControllers.getSelectedItem());
+			}
+		});
+
+		jlLoggingStatus = new JLabel("Measurement info: N/A");
+		jlLoggingStatus.setBounds(152, 253, 238, 14);
+		jlLoggingStatus.setForeground(Color.BLACK);
+
+		jlSerialPortAvailable = new JLabel("SerialPort info: N/A");
+		jlSerialPortAvailable.setBounds(152, 203, 238, 14);
+		jlSerialPortAvailable.setForeground(Color.BLACK);
+
 		JButton btnInitializeLamp = new JButton("Initialize lamp");
-		
-		jlLampInitializedReady = new JLabel("Lamp initialized, ready to start");
-		jlLampInitializedReady.setForeground(Color.GREEN);
-		
-		GroupLayout gl_controllersPanel = new GroupLayout(controllersPanel);
-		gl_controllersPanel.setHorizontalGroup(
-			gl_controllersPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_controllersPanel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_controllersPanel.createSequentialGroup()
-							.addGroup(gl_controllersPanel.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(jcControllers, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(lblSelectController, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addGap(63)
-							.addGroup(gl_controllersPanel.createParallelGroup(Alignment.TRAILING)
-								.addComponent(jcControllerPrograms, Alignment.LEADING, 0, 152, Short.MAX_VALUE)
-								.addComponent(tbControllerName, Alignment.LEADING, 152, 152, 152)
-								.addComponent(lblName_1, Alignment.LEADING)
-								.addComponent(lblSerialPort, Alignment.LEADING)
-								.addComponent(jcSerialPorts, Alignment.LEADING, 0, 152, Short.MAX_VALUE)
-								.addComponent(lblNewLabel, Alignment.LEADING))
-							.addGap(108))
-						.addGroup(gl_controllersPanel.createSequentialGroup()
-							.addComponent(btControllerSave)
-							.addPreferredGap(ComponentPlacement.RELATED)))
-					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(btLoadProgram, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btStopLogging, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btStartLogging, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnInitializeLamp, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(jlSerialPortAvailable)
-						.addComponent(jlLoggingStatus)
-						.addComponent(jlLampInitializedReady))
-					.addGap(144))
-		);
-		gl_controllersPanel.setVerticalGroup(
-			gl_controllersPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_controllersPanel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblSelectController)
-						.addComponent(lblName_1))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(jcControllers, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(tbControllerName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btStartLogging))
-					.addGap(18)
-					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblSerialPort)
-						.addComponent(btStopLogging))
-					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_controllersPanel.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(jcSerialPorts, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(lblNewLabel)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(jcControllerPrograms, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_controllersPanel.createSequentialGroup()
-							.addGap(16)
-							.addComponent(btLoadProgram)
-							.addGap(18)
-							.addComponent(btnInitializeLamp)))
-					.addPreferredGap(ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-					.addComponent(jlSerialPortAvailable)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(jlLampInitializedReady)
-					.addGap(8)
-					.addGroup(gl_controllersPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(jlLoggingStatus)
-						.addComponent(btControllerSave))
-					.addGap(54))
-		);
-		controllersPanel.setLayout(gl_controllersPanel);
+		btnInitializeLamp.setBounds(446, 156, 131, 23);
+		btnInitializeLamp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					mwdp.initController((Controller) jcControllers.getSelectedItem());
+					jlLampInitializedReady.setText("The selected controller is initialized!");
+					jlLampInitializedReady.setForeground(Color.GREEN);
+				} catch (SerialPortException ex1) {
+					jlLampInitializedReady.setText("The selected controller is NOT initialized! (Serial Port problem)");
+					jlLampInitializedReady.setForeground(Color.RED);
+				} catch (FileNotFoundException ex2) {
+					jlLampInitializedReady.setText("The selected controller is NOT initialized! (File problems)");
+					jlLampInitializedReady.setForeground(Color.RED);
+				}
+			}
+		});
+
+		jlLampInitializedReady = new JLabel("Initialization info: N/A");
+		jlLampInitializedReady.setBounds(152, 228, 238, 14);
+		jlLampInitializedReady.setForeground(Color.BLACK);
+
+		JButton btnRecheckPort = new JButton("Recheck port");
+		btnRecheckPort.setBounds(446, 199, 131, 23);
+		btnRecheckPort.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<String> availableSerialPorts = mwdp.getAvailableSerialPorts();
+				if (availableSerialPorts.contains((String) jcSerialPorts.getSelectedItem())) {
+					jlSerialPortAvailable.setText("The selected serial port is available!");
+					jlSerialPortAvailable.setForeground(Color.GREEN);
+				} else {
+					jlSerialPortAvailable.setText("The selected serial port is NOT available!");
+					jlSerialPortAvailable.setForeground(Color.RED);
+				}
+			}
+		});
+		controllersPanel.setLayout(null);
+		controllersPanel.add(lblSelectController);
+		controllersPanel.add(jcControllers);
+		controllersPanel.add(lblName_1);
+		controllersPanel.add(lblSerialPort);
+		controllersPanel.add(lblNewLabel);
+		controllersPanel.add(jlSerialPortAvailable);
+		controllersPanel.add(jlLampInitializedReady);
+		controllersPanel.add(jlLoggingStatus);
+		controllersPanel.add(jcSerialPorts);
+		controllersPanel.add(tbControllerName);
+		controllersPanel.add(jcControllerPrograms);
+		controllersPanel.add(btnRecheckPort);
+		controllersPanel.add(btStopLogging);
+		controllersPanel.add(btStartLogging);
+		controllersPanel.add(btLoadProgram);
+		controllersPanel.add(btnInitializeLamp);
+		controllersPanel.add(btControllerSave);
 
 		Panel statePanel = new Panel();
 		tabbedPane.addTab("State", null, statePanel, null);
@@ -566,7 +532,7 @@ public class MainWindow {
 
 	private void initData() {
 
-		//fill presets
+		// fill presets
 		jcPresets.removeAllItems();
 		jcPresets.addItem(new Preset());
 		List<Preset> presets = mwdp.getPresets();
@@ -587,24 +553,27 @@ public class MainWindow {
 		for (Preset pres : presets) {
 			unusedListModel.addElement(pres);
 		}
-		
-		//fill controllers
+
+		// fill controllers
 		List<Controller> controllers = mwdp.getControllers();
 		jcControllers.removeAllItems();
 		jcControllers.addItem(new Controller());
-		
+
 		jcControllerPrograms.removeAllItems();
-		for(Controller cont : controllers) {
+		for (Controller cont : controllers) {
 			jcControllers.addItem(cont);
 		}
 		List<String> availPorts = mwdp.getAvailableSerialPorts();
-		for(Controller cont: controllers) {
-			availPorts.remove(cont.getSerailPort());
+
+		for (String serialPort : availPorts) {
+			for (Controller cont : controllers) {
+				if (availPorts.contains(cont.getSerailPort())) {
+					break;
+				}
+				jcSerialPorts.addItem(serialPort);
+			}
 		}
-		for(String serialPort : availPorts) {
-			jcSerialPorts.addItem(serialPort);
-		}
-		for(Program prog : programs) {
+		for (Program prog : programs) {
 			jcControllerPrograms.addItem(prog);
 		}
 	}
@@ -694,8 +663,8 @@ public class MainWindow {
 		}
 
 	}
-	
-	private class SelectedControllerItemChanged implements ActionListener{
+
+	private class SelectedControllerItemChanged implements ActionListener {
 
 		@SuppressWarnings("unchecked")
 		@Override
@@ -703,44 +672,45 @@ public class MainWindow {
 			if (e.getSource() instanceof JComboBox<?>) {
 				JComboBox<Controller> box = (JComboBox<Controller>) e.getSource();
 				Controller selectedController = (Controller) box.getSelectedItem();
-				if(selectedController != null && !selectedController.getName().equals("New...")) {
+				if (selectedController != null) {
 					tbControllerName.setText(selectedController.getName());
-					
+
 					jcSerialPorts.removeAllItems();
 					jcSerialPorts.addItem(selectedController.getSerailPort());
 					List<String> availPorts = mwdp.getAvailableSerialPorts();
-					for(String port : availPorts) {
+					for (String port : availPorts) {
 						jcSerialPorts.addItem(port);
 					}
 					jcControllerPrograms.setSelectedItem(selectedController.getContProgram());
-					if(availPorts.contains(selectedController.getSerailPort())) {
-						jlSerialPortAvailable.setText("The selected serial port is available!");
-						jlSerialPortAvailable.setForeground(Color.GREEN);
-					}else {
-						jlSerialPortAvailable.setText("The selected serial port is NOT available!");
-						jlSerialPortAvailable.setForeground(Color.RED);
+					if (selectedController.getId() != -1) {
+						if (availPorts.contains(selectedController.getSerailPort())) {
+							jlSerialPortAvailable.setText("The selected serial port is available!");
+							jlSerialPortAvailable.setForeground(Color.GREEN);
+						} else {
+							jlSerialPortAvailable.setText("The selected serial port is NOT available!");
+							jlSerialPortAvailable.setForeground(Color.RED);
+						}
+						if (mwdp.isInit(selectedController)) {
+							jlLampInitializedReady.setText("The selected controller is initialized!");
+							jlLampInitializedReady.setForeground(Color.GREEN);
+						} else {
+							jlLampInitializedReady.setText("The selected controller is NOT initialized!");
+							jlLampInitializedReady.setForeground(Color.RED);
+						}
+						if (mwdp.isMeasurementRunning(selectedController)) {
+							jlLoggingStatus.setText("The selected controller is started!");
+							jlLoggingStatus.setForeground(Color.GREEN);
+						} else {
+							jlLoggingStatus.setText("The selected controller is stopped!");
+							jlLoggingStatus.setForeground(Color.RED);
+						}
 					}
-					if(mwdp.isInit(selectedController)) {
-						jlLampInitializedReady.setText("The selected controller is initialized!");
-						jlLampInitializedReady.setForeground(Color.GREEN);
-					}else {
-						jlLampInitializedReady.setText("The selected controller is NOT initialized!");
-						jlLampInitializedReady.setForeground(Color.RED);
-					}
-					if(mwdp.isMeasurementRunning(selectedController)) {
-						jlLoggingStatus.setText("The selected controller is started!");
-						jlLoggingStatus.setForeground(Color.GREEN);
-					}else {
-						jlLoggingStatus.setText("The selected controller is stopped!");
-						jlLoggingStatus.setForeground(Color.RED);
-					}
-					
-					
+
 				}
 			}
-			
+
 		}
-		
+
 	}
 
 	private class IntegerValidator implements FocusListener {

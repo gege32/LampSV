@@ -1,6 +1,7 @@
 package hu.gehorvath.lampsv.ui;
 
 import java.awt.Frame;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import hu.gehorvath.lampsv.core.Framework;
 import hu.gehorvath.lampsv.core.Preset;
 import hu.gehorvath.lampsv.core.Program;
 import hu.gehorvath.lampsv.ui.data.ICallback;
+import jssc.SerialPortException;
 
 public class MainWindowDataProvider {
 
@@ -82,7 +84,7 @@ public class MainWindowDataProvider {
 		Framework.stopMeasurement(controller);
 	}
 	
-	public void initController(Controller controller) {
+	public void initController(Controller controller) throws FileNotFoundException, SerialPortException {
 		Framework.initController(controller);
 	}
 	

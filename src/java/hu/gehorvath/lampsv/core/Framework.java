@@ -1,6 +1,7 @@
 package hu.gehorvath.lampsv.core;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import hu.gehorvath.lampsv.core.provider.ControllerProvider;
 import hu.gehorvath.lampsv.core.provider.PresetProvider;
 import hu.gehorvath.lampsv.core.provider.ProgramProvider;
 import hu.gehorvath.lampsv.core.service.CommunicationService;
+import jssc.SerialPortException;
 import jssc.SerialPortList;
 
 public class Framework {
@@ -68,6 +70,7 @@ public class Framework {
 			
 
 			marshaller = jaxbContext.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		} catch (JAXBException e) {
 			logger.error("Unmarshalling failed", e);
 		}
@@ -117,17 +120,45 @@ public class Framework {
 	
 	public static void saveProgram(Program newProgram, Program oldProgram){
 		List<Program> programs = getProgramProvider().getAllPrograms();
+		int newID = 0;
+		for(Program prog : programs) {
+			if(prog.getIntID() > newID) {
+				newID = prog.getIntID();
+			}
+		}
+		newID++;
+		
 		if(oldProgram == null) {
+			newProgram.setId(newID);
 			programs.add(newProgram);
 		}else {
-			programs.remove(oldProgram);
-			programs.add(newProgram);
+			oldProgram.setcharacterCode(newProgram.getCharacterCode());
+			oldProgram.setDescription(newProgram.getDesc());
+			oldProgram.setPresets(newProgram.getPresetList());
 		}
 		writeDataFile();
 	}
 	
 	public static void saveController(Controller newController, Controller oldController){
 	
+		List<Controller> controllers = getControllerProvider().getAllControllers();
+		int newID = 0;
+		for(Controller contr : controllers) {
+			if(contr.getId() > newID) {
+				newID = contr.getId();
+			}
+		}
+		newID++;
+		
+		if(oldController == null) {
+			newController.setId(newID);
+			controllers.add(newController);
+		}else {
+			oldController.setControllerName(newController.getName());
+			oldController.setProgram(newController.getContProgram());
+			oldController.setSerialPort(newController.getSerailPort());
+		}
+		
 		writeDataFile();
 	}
 	
@@ -153,7 +184,7 @@ public class Framework {
 		commService.stopLamp(controller);
 	}
 	
-	public static void initController(Controller controller) {
+	public static void initController(Controller controller) throws FileNotFoundException, SerialPortException {
 		commService.initLamp(controller);
 	}
 	

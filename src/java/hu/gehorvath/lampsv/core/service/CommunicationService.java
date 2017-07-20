@@ -24,14 +24,8 @@ public class CommunicationService {
 
 	}
 
-	public void initLamp(Controller controller) {
-		try {
-			lamps.get(controller).init();
-		} catch (FileNotFoundException e) {
-			logger.error("File problems!" + e);
-		} catch (SerialPortException e) {
-			logger.error("Serial port error" + e);
-		}
+	public void initLamp(Controller controller) throws FileNotFoundException, SerialPortException {
+		lamps.get(controller).init();
 	}
 
 	public boolean isInit(Controller controller) {
@@ -52,6 +46,11 @@ public class CommunicationService {
 	
 	public void loadProgram(Controller controller) {
 		lamps.get(controller).updateProgram();
+	}
+	
+	public void addNewController(Controller controller) {
+		Protocol prot = new Protocol(controller);
+		lamps.put(controller, prot);
 	}
 
 }

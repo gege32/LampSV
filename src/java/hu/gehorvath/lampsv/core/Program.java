@@ -28,7 +28,7 @@ public class Program {
 	List<Preset> presetList = new LinkedList<>();
 	
 	public Program(){
-		characterCode = 0x00;
+		id = -1;
 	}
 	
 	public Program(int code, int id, List<Preset> presets){
@@ -43,6 +43,9 @@ public class Program {
 	}
 	
 	public String getProgramCode(){
+		if(characterCode == 0) {
+			return "";
+		}
 		return String.valueOf((char) characterCode);
 	}
 	
@@ -52,8 +55,8 @@ public class Program {
 	}
 	
 	public String toString(){
-		if(characterCode == 0x00) return "New...";
-		return String.valueOf((char) characterCode);
+		if(id == -1) return "New...";
+		return String.valueOf((char) characterCode) + " - " + description;
 	}
 	
 	public void setPresets(List<Preset> presets){
@@ -75,17 +78,28 @@ public class Program {
 		return characterCode;
 	}
 	
+	public int getIntID() {
+		return this.id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public List<byte[]> getData(){
 		List<byte[]> toreturn = new LinkedList<byte[]>();
+		int presIndex = 0;
 		for(Preset preset : presetList){
 			byte[] temp = new byte[8];
 			temp[0] = '$';
-			int i = 1;
+			temp[1] = (byte)presIndex;
+			int i = 2;
 			for(int value : preset.getLEDValues()){
 				temp[i] = (byte)value;
 				i++;
 			}
 			toreturn.add(temp);
+			presIndex++;
 		}
 		
 		

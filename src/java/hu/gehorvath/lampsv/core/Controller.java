@@ -11,12 +11,14 @@ public class Controller {
 	@XmlAttribute
 	private String serialPort;
 	
+	@XmlAttribute
+	private int id;
 	
 	@XmlIDREF
 	Program program;
 	
 	public Controller() {
-		controllerName = "New...";
+		id = -1;
 	}
 	
 	public Program getContProgram(){
@@ -44,7 +46,16 @@ public class Controller {
 	}
 	
 	public String toString() {
+		if(id == -1) return "New...";
 		return controllerName;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getId() {
+		return id;
 	}
 
 }

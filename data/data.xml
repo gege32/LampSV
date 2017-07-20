@@ -1,1 +1,93 @@
-<?xml version="1.0" encoding="UTF-8"?><coreData><presetProvider><presets><preset presetID="0" measuredLUX="0"><values><value>0</value><value>0</value><value>0</value><value>0</value><value>0</value><value>0</value></values><ID>0</ID></preset><preset presetID="1" measuredLUX="25"><values><value>3</value><value>2</value><value>1</value><value>3</value><value>1</value><value>1</value></values><ID>1</ID></preset><preset presetID="2" measuredLUX="35"><values><value>74</value><value>72</value><value>74</value><value>71</value><value>73</value><value>83</value></values><ID>2</ID></preset><preset presetID="3" measuredLUX="243"><values><value>14</value><value>16</value><value>18</value><value>15</value><value>17</value><value>185</value></values><ID>3</ID></preset><preset presetID="4" measuredLUX="845"><values><value>73</value><value>16</value><value>59</value><value>34</value><value>38</value><value>67</value></values><ID>4</ID></preset></presets></presetProvider><programProvider><programs><program characterCode="97" id="0" description="No feny"><presets><preset>0</preset></presets><ID>0</ID></program><program characterCode="98" id="1" description="on/off"><presets><preset>1</preset><preset>0</preset></presets><ID>1</ID></program></programs></programProvider><controllerProvider><controllers><controller controllerName="Test" serialPort="ttyUSB0"/></controllers></controllerProvider></coreData>
+<?xml version="1.0" encoding="UTF-8"?>
+<coreData>
+   <presetProvider>
+      <presets>
+         <preset presetID="0" measuredLUX="0">
+            <values>
+               <value>0</value>
+               <value>0</value>
+               <value>0</value>
+               <value>0</value>
+               <value>0</value>
+               <value>0</value>
+            </values>
+            <ID>0</ID>
+         </preset>
+         <preset presetID="1" measuredLUX="25">
+            <values>
+               <value>3</value>
+               <value>2</value>
+               <value>1</value>
+               <value>3</value>
+               <value>1</value>
+               <value>1</value>
+            </values>
+            <ID>1</ID>
+         </preset>
+         <preset presetID="2" measuredLUX="35">
+            <values>
+               <value>24</value>
+               <value>74</value>
+               <value>73</value>
+               <value>72</value>
+               <value>71</value>
+               <value>83</value>
+            </values>
+            <ID>2</ID>
+         </preset>
+         <preset presetID="3" measuredLUX="243">
+            <values>
+               <value>14</value>
+               <value>16</value>
+               <value>18</value>
+               <value>15</value>
+               <value>17</value>
+               <value>185</value>
+            </values>
+            <ID>3</ID>
+         </preset>
+         <preset presetID="4" measuredLUX="845">
+            <values>
+               <value>73</value>
+               <value>16</value>
+               <value>59</value>
+               <value>34</value>
+               <value>38</value>
+               <value>67</value>
+            </values>
+            <ID>4</ID>
+         </preset>
+      </presets>
+   </presetProvider>
+   <programProvider>
+      <programs>
+         <program characterCode="97" id="0" description="No feny">
+            <presets>
+               <preset>0</preset>
+            </presets>
+            <ID>0</ID>
+         </program>
+         <program characterCode="98" id="1" description="on/off">
+            <presets>
+               <preset>1</preset>
+               <preset>0</preset>
+            </presets>
+            <ID>1</ID>
+         </program>
+         <program characterCode="99" id="2" description="testelek">
+            <presets>
+               <preset>1</preset>
+               <preset>4</preset>
+            </presets>
+            <ID>2</ID>
+         </program>
+      </programs>
+   </programProvider>
+   <controllerProvider>
+      <controllers>
+         <controller controllerName="test1" serialPort="COM1" id="1">
+            <program>1</program>
+         </controller>
+      </controllers>
+   </controllerProvider>
+</coreData>
