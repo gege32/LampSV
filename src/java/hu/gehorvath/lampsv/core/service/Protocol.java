@@ -212,7 +212,11 @@ public class Protocol {
 			}
 
 		}
-		presetDataFile.close();
+		try{
+			presetDataFile.close();
+		}catch(IOException ex2){
+			logger.info("Could not close file", ex2);	
+		}
 		
 		logger.info("Protocol stopped with controller:" + controller.getName());
 	}
