@@ -89,6 +89,14 @@
             <program>1</program>
             <id>0</id>
          </controller>
+         <controller controllerName="egyeske" serialPort="COM4" iD="1">
+            <program>1</program>
+            <id>1</id>
+         </controller>
+         <controller controllerName="ketteske" serialPort="COM5" iD="2">
+            <program>1</program>
+            <id>2</id>
+         </controller>
       </controllers>
    </controllerProvider>
 </coreData>

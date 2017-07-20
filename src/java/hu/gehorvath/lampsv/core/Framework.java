@@ -155,6 +155,7 @@ public class Framework {
 		if(oldController == null) {
 			newController.setId(newID);
 			controllers.add(newController);
+			commService.addNewController(newController);
 		}else {
 			oldController.setControllerName(newController.getName());
 			oldController.setProgram(newController.getContProgram());

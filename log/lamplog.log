@@ -271,3 +271,17 @@ Caused by: org.xml.sax.SAXParseException; systemId: file:/C:/LuxusLampa/LampSV/d
 20 júl. 2017 19:22:48 DEBUG Protocol - MessageType: T
 20 júl. 2017 19:22:48  INFO Protocol - Protocol stopped with controller:test1
 20 júl. 2017 19:27:02  INFO Framework - Starting up framework!
+20 júl. 2017 19:52:24  INFO Framework - Starting up framework!
+20 júl. 2017 19:52:30  INFO Protocol - Protocol initialized, controller: test1
+20 júl. 2017 19:52:35  INFO Protocol - Protocol starting with controller:test1
+20 júl. 2017 19:53:42  INFO Protocol - Protocol stopped with controller:test1
+20 júl. 2017 20:36:32  INFO Framework - Starting up framework!
+20 júl. 2017 20:36:53  INFO Framework - Data file saved!
+20 júl. 2017 20:36:53  INFO Framework - Controller saved!
+20 júl. 2017 20:37:22  INFO Framework - Starting up framework!
+20 júl. 2017 20:37:28  INFO Protocol - Protocol initialized, controller: egyeske
+20 júl. 2017 20:37:36  INFO Protocol - Protocol starting with controller:egyeske
+20 júl. 2017 20:37:43  INFO Framework - Data file saved!
+20 júl. 2017 20:37:43  INFO Framework - Controller saved!
+20 júl. 2017 20:37:56  INFO Framework - Data file saved!
+20 júl. 2017 20:37:56  INFO Framework - Controller saved!
