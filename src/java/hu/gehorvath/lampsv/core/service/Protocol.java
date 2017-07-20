@@ -1,5 +1,6 @@
 package hu.gehorvath.lampsv.core.service;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -66,18 +67,36 @@ public class Protocol {
 		mesaureDevice.setParams(SerialPort.BAUDRATE_4800, SerialPort.DATABITS_8, SerialPort.STOPBITS_2,
 				SerialPort.PARITY_NONE);
 
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-		sdf.setTimeZone(TimeZone.getTimeZone("CEST"));
+		sdf = new SimpleDateFormat("HH:mm:ss");
+		//sdf.setTimeZone(TimeZone.getTimeZone("CEST"));
 		
-		SimpleDateFormat logsdf = new SimpleDateFormat("HHmm");
-		logsdf.setTimeZone(TimeZone.getTimeZone("CEST"));
+		SimpleDateFormat logsdf = new SimpleDateFormat("MMDDHHmm");
+		//logsdf.setTimeZone(TimeZone.getTimeZone("CEST"));
+		try{
+			File dir = new File("data\\" + controller.getName());
+			if(!dir.exists()){
+				dir.mkdir();
+			}
+			
+			StringBuilder logfile = new StringBuilder();
+			logfile.append("data\\");
+			logfile.append(controller.getName());
+			logfile.append("\\");
+			logfile.append(logsdf.format(new Date(System.currentTimeMillis())) + ".dat");
+			File datafile = new File(logfile.toString());
+			try{
+				datafile.createNewFile();
+			}catch(IOException e1){
+				logger.info("Log file already exists, but we dont care");
+			}
+			
+			presetDataFile = new FileOutputStream(datafile);
+		}catch(FileNotFoundException ex){
+			logger.error(ex);
+			throw ex;
+		}
 		
-		StringBuilder logfile = new StringBuilder();
-		logfile.append(controller.getName());
-		logfile.append("\\");
-		logfile.append(logsdf.format(new Date(System.currentTimeMillis())) + ".dat");
 		
-		presetDataFile = new FileOutputStream(logfile.toString());
 		// measureDataFile = new FileOutputStream(measureFileName);
 		
 		newSingleThreadExecutor = Executors.newSingleThreadExecutor();
@@ -92,6 +111,7 @@ public class Protocol {
 		byte[] messageType = new byte[5];
 		String data = "";
 		String command = "";
+		enabled = true;
 		// main cycle
 		while (enabled) {
 
@@ -153,6 +173,7 @@ public class Protocol {
 							try {
 								measureDataFile.write(toWrite.getBytes(Charset.forName("UTF-8")));
 							} catch (IOException e) {
+								logger.error(e);
 								enabled = false;
 							}
 
@@ -191,6 +212,9 @@ public class Protocol {
 			}
 
 		}
+		presetDataFile.close();
+		
+		logger.info("Protocol stopped with controller:" + controller.getName());
 	}
 
 	private boolean isNumeric(String str) {

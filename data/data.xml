@@ -67,7 +67,7 @@
             </presets>
             <ID>0</ID>
          </program>
-         <program characterCode="102" id="1" description="on/off">
+         <program characterCode="114" id="1" description="on/off">
             <presets>
                <preset>0</preset>
                <preset>1</preset>
@@ -85,8 +85,9 @@
    </programProvider>
    <controllerProvider>
       <controllers>
-         <controller controllerName="test1" serialPort="COM1" id="1">
+         <controller controllerName="test1" serialPort="COM5" iD="0">
             <program>1</program>
+            <id>0</id>
          </controller>
       </controllers>
    </controllerProvider>

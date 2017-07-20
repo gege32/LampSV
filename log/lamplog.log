@@ -1,17 +1,273 @@
-20 Jul 2017 13:16:10  INFO Framework - Starting up framework!
-20 Jul 2017 13:16:44  INFO Framework - Data file saved!
-20 Jul 2017 14:43:49  INFO Framework - Starting up framework!
-20 Jul 2017 14:44:22  INFO Framework - Starting up framework!
-20 Jul 2017 14:45:12  INFO Framework - Starting up framework!
-20 Jul 2017 14:48:16  INFO Framework - Starting up framework!
-20 Jul 2017 14:50:15  INFO Framework - Starting up framework!
-20 Jul 2017 15:01:55  INFO Framework - Starting up framework!
-20 Jul 2017 15:05:31  INFO Framework - Starting up framework!
-20 Jul 2017 15:07:00  INFO Framework - Starting up framework!
-20 Jul 2017 15:08:41  INFO Framework - Starting up framework!
-20 Jul 2017 15:11:11  INFO Framework - Starting up framework!
-20 Jul 2017 15:13:15  INFO Framework - Starting up framework!
-20 Jul 2017 15:18:56  INFO Framework - Starting up framework!
-20 Jul 2017 15:20:23  INFO Framework - Starting up framework!
-20 Jul 2017 15:21:34  INFO Framework - Starting up framework!
-20 Jul 2017 15:24:28  INFO Framework - Starting up framework!
+20 júl. 2017 18:25:55  INFO Framework - Starting up framework!
+20 júl. 2017 18:25:55 ERROR Framework - Unmarshalling failed
+com.sun.xml.internal.bind.v2.runtime.IllegalAnnotationsException: 1 counts of IllegalAnnotationExceptions
+Class has two properties of the same name "id"
+	this problem is related to the following location:
+		at public int hu.gehorvath.lampsv.core.Controller.getId()
+		at hu.gehorvath.lampsv.core.Controller
+	this problem is related to the following location:
+		at private int hu.gehorvath.lampsv.core.Controller.id
+		at hu.gehorvath.lampsv.core.Controller
+
+	at com.sun.xml.internal.bind.v2.runtime.IllegalAnnotationsException$Builder.check(Unknown Source)
+	at com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl.getTypeInfoSet(Unknown Source)
+	at com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl.<init>(Unknown Source)
+	at com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl.<init>(Unknown Source)
+	at com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl$JAXBContextBuilder.build(Unknown Source)
+	at com.sun.xml.internal.bind.v2.ContextFactory.createContext(Unknown Source)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at javax.xml.bind.ContextFinder.newInstance(Unknown Source)
+	at javax.xml.bind.ContextFinder.newInstance(Unknown Source)
+	at javax.xml.bind.ContextFinder.find(Unknown Source)
+	at javax.xml.bind.JAXBContext.newInstance(Unknown Source)
+	at javax.xml.bind.JAXBContext.newInstance(Unknown Source)
+	at hu.gehorvath.lampsv.core.Framework.startFramework(Framework.java:65)
+	at hu.gehorvath.lampsv.LampSV.start(LampSV.java:38)
+	at hu.gehorvath.lampsv.LampSV.main(LampSV.java:53)
+20 júl. 2017 18:28:20  INFO Framework - Starting up framework!
+20 júl. 2017 18:29:25  INFO Framework - Data file saved!
+20 júl. 2017 18:29:25  INFO Framework - Preset saved!
+20 júl. 2017 18:31:21  INFO Framework - Starting up framework!
+20 júl. 2017 18:32:31  INFO Framework - Starting up framework!
+20 júl. 2017 18:32:38  INFO Framework - Starting up framework!
+20 júl. 2017 18:34:07  INFO Framework - Starting up framework!
+20 júl. 2017 18:34:07 ERROR Framework - Unmarshalling failed
+javax.xml.bind.UnmarshalException
+ - with linked exception:
+[org.xml.sax.SAXParseException; systemId: file:/C:/LuxusLampa/LampSV/data/data.xml; lineNumber: 70; columnNumber: 7; The element type "programs" must be terminated by the matching end-tag "</programs>".]
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.createUnmarshalException(Unknown Source)
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.createUnmarshalException(Unknown Source)
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.unmarshal0(Unknown Source)
+	at com.sun.xml.internal.bind.v2.runtime.unmarshaller.UnmarshallerImpl.unmarshal(Unknown Source)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(Unknown Source)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(Unknown Source)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(Unknown Source)
+	at javax.xml.bind.helpers.AbstractUnmarshallerImpl.unmarshal(Unknown Source)
+	at hu.gehorvath.lampsv.core.Framework.startFramework(Framework.java:69)
+	at hu.gehorvath.lampsv.LampSV.start(LampSV.java:38)
+	at hu.gehorvath.lampsv.LampSV.main(LampSV.java:53)
+Caused by: org.xml.sax.SAXParseException; systemId: file:/C:/LuxusLampa/LampSV/data/data.xml; lineNumber: 70; columnNumber: 7; The element type "programs" must be terminated by the matching end-tag "</programs>".
+	at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.createSAXParseException(Unknown Source)
+	at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.fatalError(Unknown Source)
+	at com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(Unknown Source)
+	at com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(Unknown Source)
+	at com.sun.org.apache.xerces.internal.impl.XMLScanner.reportFatalError(Unknown Source)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanEndElement(Unknown Source)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$FragmentContentDriver.next(Unknown Source)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(Unknown Source)
+	at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.next(Unknown Source)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(Unknown Source)
+	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(Unknown Source)
+	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(Unknown Source)
+	at com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(Unknown Source)
+	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(Unknown Source)
+	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(Unknown Source)
+	... 9 more
+20 júl. 2017 18:34:25  INFO Framework - Starting up framework!
+20 júl. 2017 18:35:28  INFO Framework - Data file saved!
+20 júl. 2017 18:35:28  INFO Framework - Program saved!
+20 júl. 2017 18:36:18  INFO Framework - Starting up framework!
+20 júl. 2017 18:36:28  INFO Framework - Data file saved!
+20 júl. 2017 18:36:28  INFO Framework - Program saved!
+20 júl. 2017 18:36:52  INFO Framework - Data file saved!
+20 júl. 2017 18:36:52  INFO Framework - Program saved!
+20 júl. 2017 18:37:38  INFO Framework - Data file saved!
+20 júl. 2017 18:37:38  INFO Framework - Controller saved!
+20 júl. 2017 18:38:30  INFO Framework - Starting up framework!
+20 júl. 2017 18:40:11  INFO Framework - Data file saved!
+20 júl. 2017 18:40:11  INFO Framework - Controller saved!
+20 júl. 2017 18:43:26  INFO Framework - Data file saved!
+20 júl. 2017 18:43:26  INFO Framework - Controller saved!
+20 júl. 2017 18:43:52  INFO Framework - Starting up framework!
+20 júl. 2017 18:48:06  INFO Framework - Starting up framework!
+20 júl. 2017 18:50:59  INFO Framework - Starting up framework!
+20 júl. 2017 18:52:12  INFO Framework - Data file saved!
+20 júl. 2017 18:52:12  INFO Framework - Program saved!
+20 júl. 2017 18:53:18  INFO Framework - Starting up framework!
+20 júl. 2017 18:53:30  INFO Framework - Data file saved!
+20 júl. 2017 18:53:30  INFO Framework - Controller saved!
+20 júl. 2017 19:01:13  INFO Framework - Starting up framework!
+20 júl. 2017 19:01:19 ERROR Protocol - java.io.FileNotFoundException: test1\1701.dat (A rendszer nem találja a megadott elérési utat)
+20 júl. 2017 19:09:34  INFO Framework - Starting up framework!
+20 júl. 2017 19:09:42  INFO Protocol - Protocol initialized, controller: test1
+20 júl. 2017 19:10:06  INFO Protocol - Protocol starting with controller:test1
+20 júl. 2017 19:17:04  INFO Framework - Starting up framework!
+20 júl. 2017 19:17:09  INFO Protocol - Log file already exists, but we dont care
+20 júl. 2017 19:17:09 ERROR Protocol - java.io.FileNotFoundException: data\test1\072011917.dat (A rendszer nem találja a megadott elérési utat)
+20 júl. 2017 19:18:39  INFO Framework - Starting up framework!
+20 júl. 2017 19:18:44  INFO Protocol - Protocol initialized, controller: test1
+20 júl. 2017 19:18:55  INFO Protocol - Protocol starting with controller:test1
+20 júl. 2017 19:18:55 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:20:47  INFO Framework - Starting up framework!
+20 júl. 2017 19:20:52  INFO Protocol - Protocol initialized, controller: test1
+20 júl. 2017 19:20:55  INFO Protocol - Protocol starting with controller:test1
+20 júl. 2017 19:20:55 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:20:55 DEBUG Protocol - Measure Data: 0337
+20 júl. 2017 19:20:55 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:20:55 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:20:56 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:20:57 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:20:58 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:20:59 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:20:59 DEBUG Protocol - Measure Data: 0336
+20 júl. 2017 19:20:59 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:20:59 DEBUG Protocol - MessageType: P
+20 júl. 2017 19:20:59 DEBUG Protocol - Preset Data: 0000
+20 júl. 2017 19:20:59 DEBUG Protocol - Preset: 0
+20 júl. 2017 19:21:00 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:21:00 DEBUG Protocol - Measure Data: 0337
+20 júl. 2017 19:21:00 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:01 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:21:01 DEBUG Protocol - Measure Data: 0336
+20 júl. 2017 19:21:01 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:02 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:03 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:21:03 DEBUG Protocol - Measure Data: 0337
+20 júl. 2017 19:21:03 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:04 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:05 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:06 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:07 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:08 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:09 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:10 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:11 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:12 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:13 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:14 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:15 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:21:15 DEBUG Protocol - Measure Data: 0336
+20 júl. 2017 19:21:15 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:16 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:21:16 DEBUG Protocol - Measure Data: 0331
+20 júl. 2017 19:21:16 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:16 DEBUG Protocol - MessageType: P
+20 júl. 2017 19:21:16 DEBUG Protocol - Preset Data: 0001
+20 júl. 2017 19:21:16 DEBUG Protocol - Preset: 1
+20 júl. 2017 19:21:17 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:21:17 DEBUG Protocol - Measure Data: 0330
+20 júl. 2017 19:21:17 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:18 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:21:18 DEBUG Protocol - Measure Data: 0336
+20 júl. 2017 19:21:18 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:19 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:20 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:21:20 DEBUG Protocol - Measure Data: 0337
+20 júl. 2017 19:21:20 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:21 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:22 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:23 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:21:23 DEBUG Protocol - Measure Data: 0336
+20 júl. 2017 19:21:23 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:24 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:25 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:21:25 DEBUG Protocol - Measure Data: 0337
+20 júl. 2017 19:21:25 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:26 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:27 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:21:27 DEBUG Protocol - Measure Data: 0336
+20 júl. 2017 19:21:27 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:28 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:28 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:21:28 DEBUG Protocol - Measure Data: 0337
+20 júl. 2017 19:21:29 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:29 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:30 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:31 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:32 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:33 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:34 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:35 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:36 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:37 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:38 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:39 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:40 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:41 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:42 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:43 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:44 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:45 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:46 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:47 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:48 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:49 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:50 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:51 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:52 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:53 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:54 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:55 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:56 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:57 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:58 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:21:59 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:00 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:01 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:02 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:03 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:04 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:05 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:06 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:06 DEBUG Protocol - MessageType: P
+20 júl. 2017 19:22:06 DEBUG Protocol - Preset Data: 0000
+20 júl. 2017 19:22:06 DEBUG Protocol - Preset: 0
+20 júl. 2017 19:22:07 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:22:07 DEBUG Protocol - Measure Data: 0336
+20 júl. 2017 19:22:07 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:07 DEBUG Protocol - MessageType: P
+20 júl. 2017 19:22:07 DEBUG Protocol - Preset Data: 0001
+20 júl. 2017 19:22:07 DEBUG Protocol - Preset: 1
+20 júl. 2017 19:22:08 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:22:08 DEBUG Protocol - Measure Data: 0337
+20 júl. 2017 19:22:08 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:09 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:22:09 DEBUG Protocol - Measure Data: 0336
+20 júl. 2017 19:22:09 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:10 DEBUG Protocol - MessageType: L
+20 júl. 2017 19:22:10 DEBUG Protocol - Measure Data: 0337
+20 júl. 2017 19:22:10 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:11 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:12 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:13 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:14 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:15 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:16 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:17 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:18 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:18 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:19 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:20 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:21 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:22 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:23 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:24 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:25 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:26 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:27 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:28 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:29 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:30 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:31 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:32 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:33 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:34 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:35 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:36 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:37 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:38 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:39 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:40 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:41 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:42 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:43 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:44 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:45 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:46 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:47 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:48 DEBUG Protocol - MessageType: T
+20 júl. 2017 19:22:48  INFO Protocol - Protocol stopped with controller:test1
+20 júl. 2017 19:27:02  INFO Framework - Starting up framework!

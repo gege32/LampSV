@@ -1,0 +1,1 @@
+java -cp . -Dlog4j.configuration=file:data\log4j.xml -Djavax.xml.bind.context.factory=org.eclipse.persistence.jaxb.JAXBContextFactory -Djaxb.formatted.output=true -jar LampSupervisor-0.9.jar

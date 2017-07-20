@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>LampSupervisor</groupId>
   <artifactId>LampSupervisor</artifactId>
-  <version>0.2</version>
+  <version>0.9</version>
   <build>
     <sourceDirectory>src/java</sourceDirectory>
     <resources>
@@ -35,6 +35,16 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
               <transformers>
                 <transformer>
                   <mainClass>hu.gehorvath.lampsv.LampSV</mainClass>
