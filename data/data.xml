@@ -67,10 +67,10 @@
             </presets>
             <ID>0</ID>
          </program>
-         <program characterCode="98" id="1" description="on/off">
+         <program characterCode="102" id="1" description="on/off">
             <presets>
-               <preset>1</preset>
                <preset>0</preset>
+               <preset>1</preset>
             </presets>
             <ID>1</ID>
          </program>

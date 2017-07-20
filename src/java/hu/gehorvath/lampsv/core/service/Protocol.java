@@ -82,11 +82,12 @@ public class Protocol {
 		
 		newSingleThreadExecutor = Executors.newSingleThreadExecutor();
 		initialized = true;
-		
+		logger.info("Protocol initialized, controller: " + controller.getName());
 	}
 
 	private void work() {
 
+		logger.info("Protocol starting with controller:" + controller.getName());
 		byte[] incoming = new byte[5];
 		byte[] messageType = new byte[5];
 		String data = "";

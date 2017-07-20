@@ -36,10 +36,12 @@ public class LampSV {
 	private void start() {
 		Framework framework = new Framework();
 		framework.startFramework();
+		logger.addAppender(new MainWindow.LogListener());
+		
 		MainWindow mainscreen = new MainWindow();
 		mainscreen.setVisible(true);
 		
-		logger.addAppender(new MainWindow.LogListener());
+		
 		
 	}
 

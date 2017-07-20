@@ -116,6 +116,7 @@ public class Framework {
 		}
 		
 		writeDataFile();
+		logger.info("Preset saved!");
 	}
 	
 	public static void saveProgram(Program newProgram, Program oldProgram){
@@ -137,6 +138,7 @@ public class Framework {
 			oldProgram.setPresets(newProgram.getPresetList());
 		}
 		writeDataFile();
+		logger.info("Program saved!");
 	}
 	
 	public static void saveController(Controller newController, Controller oldController){
@@ -160,6 +162,7 @@ public class Framework {
 		}
 		
 		writeDataFile();
+		logger.info("Controller saved!");
 	}
 	
 	private static void writeDataFile() {

@@ -3,6 +3,7 @@ package hu.gehorvath.lampsv.ui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,13 +14,9 @@ import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -27,17 +24,19 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.BevelBorder;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
 
 import hu.gehorvath.lampsv.core.Controller;
-import hu.gehorvath.lampsv.core.Framework;
 import hu.gehorvath.lampsv.core.Preset;
 import hu.gehorvath.lampsv.core.Program;
 import jssc.SerialPortException;
@@ -75,6 +74,7 @@ public class MainWindow {
 	private JTextField tbProgramName;
 	private JTextField tbProgramDesc;
 	private JTextField tbControllerName;
+	private JTable jtStatus;
 
 	/**
 	 * Create the application.
@@ -516,7 +516,18 @@ public class MainWindow {
 		controllersPanel.add(btControllerSave);
 
 		Panel statePanel = new Panel();
+		statePanel.setBackground(Color.GRAY);
 		tabbedPane.addTab("State", null, statePanel, null);
+		statePanel.setLayout(null);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 11, 485, 350);
+		statePanel.add(scrollPane);
+
+		jtStatus = new JTable(new StatusTableModel());
+		jtStatus.setDefaultRenderer(String.class, new StatusCellRenderer());
+		jtStatus.setRowHeight(30);
+		scrollPane.setViewportView(jtStatus);
 
 		JPanel logPanel = new JPanel();
 		logPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -734,6 +745,87 @@ public class MainWindow {
 		@Override
 		public void focusGained(FocusEvent arg0) {
 			// TODO Auto-generated method stub
+
+		}
+	}
+
+	private class StatusTableModel extends AbstractTableModel {
+
+		List<Controller> controllers;
+
+		String[] columnNames = new String[] { "Controller", "Serial status", "Init status", "Measurement status" };
+
+		public StatusTableModel() {
+			super();
+			this.controllers = mwdp.getControllers();
+		}
+
+		@Override
+		public int getColumnCount() {
+			return 4;
+		}
+
+		@Override
+		public int getRowCount() {
+			return controllers.size();
+		}
+
+		@Override
+		public Object getValueAt(int arg0, int arg1) {
+			if (arg1 == 0) {
+				return controllers.get(arg0).getName();
+			} else if (arg1 == 1) {
+				List<String> availPorts = mwdp.getAvailableSerialPorts();
+				if (availPorts.contains(controllers.get(arg0).getSerailPort())) {
+					return "OK";
+				} else {
+					return "ERROR";
+				}
+			} else if (arg1 == 2) {
+				if (mwdp.isInit(controllers.get(arg0))) {
+					return "OK";
+				} else {
+					return "NO";
+				}
+			} else if (arg1 == 3) {
+				if (mwdp.isMeasurementRunning(controllers.get(arg0))) {
+					return "RUNNING";
+				} else {
+					return "STOPPED";
+				}
+			}
+			return "WTF";
+		}
+		
+		@Override
+		public Class getColumnClass(int c) {
+	        return String.class;
+	    }
+
+		@Override
+		public String getColumnName(int col) {
+			return columnNames[col];
+		}
+
+	}
+
+	public class StatusCellRenderer implements TableCellRenderer{
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+				int row, int col) {
+
+			JLabel label = new JLabel((String)value);
+			JPanel panel = new JPanel();
+			if (value.equals("OK") || value.equals("RUNNING")) {
+				panel.setBackground(Color.GREEN);
+			} else if(value.equals("ERROR") || value.equals("NO") || value.equals("STOPPED")){
+				panel.setBackground(Color.RED);
+			}
+			
+			panel.add(label);
+
+			// Return the JLabel which renders the cell.
+			return panel;
 
 		}
 	}
