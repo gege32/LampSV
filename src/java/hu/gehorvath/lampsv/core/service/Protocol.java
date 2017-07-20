@@ -167,7 +167,7 @@ public class Protocol {
 					data = new String(incoming);
 					if (Integer.parseInt(data) > lastLight + 2 || Integer.parseInt(data) < lastLight - 2) {
 						lastLight = Integer.parseInt(data);
-						System.out.println("Light ADC: " + lastLight);
+						logger.debug("Light ADC: " + lastLight);
 						if (measureDataFile != null && measureSave) {
 							String toWrite = convertTime(System.currentTimeMillis()) + "," + data + "\r\n";
 							try {
