@@ -15,6 +15,9 @@ import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -539,6 +542,16 @@ public class MainWindow {
 
 		jcPresets.addActionListener(new SelectedPresetItemChanged());
 		jcPrograms.addActionListener(new SelectedProgramItemChanged());
+		
+		ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+		executorService.scheduleAtFixedRate(new Runnable() {
+
+			@Override
+			public void run() {
+				jtStatus.invalidate();				
+			}
+			
+		}, 30, 30, TimeUnit.SECONDS);
 	}
 
 	private void initData() {
