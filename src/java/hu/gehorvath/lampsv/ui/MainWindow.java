@@ -344,12 +344,12 @@ public class MainWindow {
 
 		JButton jbMoveDown = new JButton("Down");
 		jbMoveDown.setBounds(506, 157, 72, 23);
-		jbMoveUp.addMouseListener(new MouseAdapter() {
+		jbMoveDown.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Preset selectedPres = jlUsedPresets.getSelectedValue();
 				int currentIndex = usedListModel.indexOf(selectedPres);
-				if (currentIndex < usedListModel.size()) {
+				if (currentIndex < usedListModel.size() - 1) {
 					usedListModel.removeElement(selectedPres);
 					usedListModel.add(currentIndex + 1, selectedPres);
 				}
@@ -435,7 +435,8 @@ public class MainWindow {
 		btStartLogging.setBounds(446, 33, 131, 23);
 		btStartLogging.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				mwdp.startMeasurement((Controller) jcControllers.getSelectedItem());
+				int i = JOptionPane.showConfirmDialog(null, "Are you shure you want to start measurement with the given parameters?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
+				if(i == 0) mwdp.startMeasurement((Controller) jcControllers.getSelectedItem());
 			}
 		});
 
@@ -443,7 +444,8 @@ public class MainWindow {
 		btStopLogging.setBounds(446, 74, 131, 23);
 		btStopLogging.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				mwdp.stopMeasurement((Controller) jcControllers.getSelectedItem());
+				int i = JOptionPane.showConfirmDialog(null, "Are you shure you want to stop measurement?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
+				if(i == 0) mwdp.stopMeasurement((Controller) jcControllers.getSelectedItem());
 			}
 		});
 
@@ -451,7 +453,8 @@ public class MainWindow {
 		btLoadProgram.setBounds(446, 115, 131, 23);
 		btLoadProgram.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				mwdp.loadProgramToController((Controller) jcControllers.getSelectedItem());
+				int i = JOptionPane.showConfirmDialog(null, "Are you shure you want to load the program to the lamp?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
+				if(i == 0)  mwdp.loadProgramToController((Controller) jcControllers.getSelectedItem());
 			}
 		});
 
@@ -490,12 +493,25 @@ public class MainWindow {
 		btnRecheckPort.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<String> availableSerialPorts = mwdp.getAvailableSerialPorts();
-				if (availableSerialPorts.contains((String) jcSerialPorts.getSelectedItem())) {
+				String selectedPort = (String) jcSerialPorts.getSelectedItem();
+				if (availableSerialPorts.contains(selectedPort)) {
 					jlSerialPortAvailable.setText("The selected serial port is available!");
 					jlSerialPortAvailable.setForeground(Color.GREEN);
 				} else {
 					jlSerialPortAvailable.setText("The selected serial port is NOT available!");
 					jlSerialPortAvailable.setForeground(Color.RED);
+				}
+
+				Controller selectedController = (Controller) jcControllers.getSelectedItem();
+				if (selectedController != null) {
+					jcSerialPorts.removeAllItems();
+					if (!availableSerialPorts.contains(selectedController.getSerailPort())) {
+						jcSerialPorts.addItem(selectedController.getSerailPort());
+					}
+					for (String port : availableSerialPorts) {
+						jcSerialPorts.addItem(port);
+					}
+					jcSerialPorts.setSelectedItem(selectedPort);
 				}
 			}
 		});
@@ -542,15 +558,15 @@ public class MainWindow {
 
 		jcPresets.addActionListener(new SelectedPresetItemChanged());
 		jcPrograms.addActionListener(new SelectedProgramItemChanged());
-		
+
 		ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 		executorService.scheduleAtFixedRate(new Runnable() {
 
 			@Override
 			public void run() {
-				jtStatus.invalidate();				
+				jtStatus.invalidate();
 			}
-			
+
 		}, 30, 30, TimeUnit.SECONDS);
 	}
 
@@ -700,11 +716,14 @@ public class MainWindow {
 					tbControllerName.setText(selectedController.getName());
 
 					jcSerialPorts.removeAllItems();
-					jcSerialPorts.addItem(selectedController.getSerailPort());
 					List<String> availPorts = mwdp.getAvailableSerialPorts();
+					if (!availPorts.contains(selectedController.getSerailPort())) {
+						jcSerialPorts.addItem(selectedController.getSerailPort());
+					}
 					for (String port : availPorts) {
 						jcSerialPorts.addItem(port);
 					}
+					jcSerialPorts.setSelectedItem(selectedController.getSerailPort());
 					jcControllerPrograms.setSelectedItem(selectedController.getContProgram());
 					if (selectedController.getId() != -1) {
 						if (availPorts.contains(selectedController.getSerailPort())) {
@@ -745,12 +764,18 @@ public class MainWindow {
 				JTextField textField = (JTextField) e.getSource();
 				if (textField.getText() != null && !textField.getText().equals("")) {
 					try {
-						Integer.parseInt(textField.getText());
+						int value = Integer.parseInt(textField.getText());
+						if (value > 50 || value < 0) {
+							JOptionPane.showMessageDialog(null, "Intput field value must be 0 <= X <= 50",
+									"Value Error", JOptionPane.ERROR_MESSAGE);
+							textField.setText("");
+						}
 					} catch (NumberFormatException ex) {
 						JOptionPane.showMessageDialog(null, "Intput field value can only be numbers!", "Format Error",
 								JOptionPane.ERROR_MESSAGE);
 						textField.setText("");
 					}
+
 				}
 			}
 		}
@@ -809,11 +834,11 @@ public class MainWindow {
 			}
 			return "WTF";
 		}
-		
+
 		@Override
 		public Class getColumnClass(int c) {
-	        return String.class;
-	    }
+			return String.class;
+		}
 
 		@Override
 		public String getColumnName(int col) {
@@ -822,19 +847,19 @@ public class MainWindow {
 
 	}
 
-	public class StatusCellRenderer implements TableCellRenderer{
+	public class StatusCellRenderer implements TableCellRenderer {
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int col) {
 
-			JLabel label = new JLabel((String)value);
+			JLabel label = new JLabel((String) value);
 			JPanel panel = new JPanel();
 			if (value.equals("OK") || value.equals("RUNNING")) {
 				panel.setBackground(Color.GREEN);
-			} else if(value.equals("ERROR") || value.equals("NO") || value.equals("STOPPED")){
+			} else if (value.equals("ERROR") || value.equals("NO") || value.equals("STOPPED")) {
 				panel.setBackground(Color.RED);
 			}
-			
+
 			panel.add(label);
 
 			// Return the JLabel which renders the cell.
