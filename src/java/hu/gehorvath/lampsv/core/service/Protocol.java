@@ -70,7 +70,7 @@ public class Protocol {
 		sdf = new SimpleDateFormat("HH:mm:ss");
 		//sdf.setTimeZone(TimeZone.getTimeZone("CEST"));
 		
-		SimpleDateFormat logsdf = new SimpleDateFormat("MMDDHHmm");
+		SimpleDateFormat logsdf = new SimpleDateFormat("MMddHHmm");
 		//logsdf.setTimeZone(TimeZone.getTimeZone("CEST"));
 		try{
 			File dir = new File("data\\" + controller.getName());
