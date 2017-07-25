@@ -665,10 +665,10 @@ public class MainWindow {
 				jtfPresetID.setText(selectedPreset.getID());
 				int[] leds = selectedPreset.getLEDValues();
 				jtfLed1on.setText(leds[0] + "");
-				jtfLed1off.setText(leds[1] + "");
-				jtfLed2on.setText(leds[2] + "");
-				jtfLed2off.setText(leds[3] + "");
-				jtfLed3on.setText(leds[4] + "");
+				jtfLed1off.setText(leds[3] + "");
+				jtfLed2on.setText(leds[1] + "");
+				jtfLed2off.setText(leds[4] + "");
+				jtfLed3on.setText(leds[2] + "");
 				jtfLed3off.setText(leds[5] + "");
 
 				jtfLux.setText(selectedPreset.getLUX() + "");
